@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RemindMe+ | Smart Reminders. Better Life.</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  @font-face{
+    font-family:'Satoshi';
+    src:url('fonts/Satoshi-Variable.woff2') format('woff2');
+    font-weight:300 900; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'Satoshi';
+    src:url('fonts/Satoshi-VariableItalic.woff2') format('woff2');
+    font-weight:300 900; font-style:italic; font-display:swap;
+  }
+
+  :root{
+    --navy:#0B1B3D;
+    --navy-2:#102554;
+    --blue:#2F6BFF;
+    --blue-dark:#2557d6;
+    --bg:#F4F7FE;
+    --ink:#0B1B3D;
+    --muted:#5B6478;
+    --card:#FFFFFF;
+    --line:#E6EAF5;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0A1120; --ink:#EEF1FA; --card:#141C33; --line:#232B44; --muted:#98A2C0;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0A1120; --ink:#EEF1FA; --card:#141C33; --line:#232B44; --muted:#98A2C0;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px); scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+  body{
+    font-family:'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+
+  /* NAV */
+  header{
+    background:var(--navy);
+    padding-top:env(safe-area-inset-top,0px);
+    position:sticky; top:0; z-index:50;
+    transition:transform .3s ease;
+  }
+  header.header-hidden{transform:translateY(-100%);}
+  .nav{
+    max-width:1280px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px;
+  }
+  .logo{display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.15rem; color:#fff;}
+  .nav-logo{height:57px; width:auto; display:block;}
+  .logo-mark{
+    width:34px; height:34px; border-radius:9px;
+    background:linear-gradient(145deg,var(--blue),#5C8CFF);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1rem;
+  }
+  .nav-links{display:flex; gap:32px; list-style:none;}
+  .nav-links a{color:#C9D2EE; font-size:.95rem; font-weight:500; transition:color .15s;}
+  .nav-links a:hover, .nav-links a:focus-visible{color:#fff;}
+  .nav-cta{
+    background:var(--blue); color:#fff; border-radius:999px;
+    font-weight:600; font-size:.9rem; border:none; cursor:pointer;
+    width:197px; height:39px; display:inline-flex; align-items:center; justify-content:center; white-space:nowrap;
+    transition:background .2s ease, transform .2s cubic-bezier(.4,0,.2,1), box-shadow .2s ease;
+  }
+  .nav-cta:hover{background:var(--blue-dark); transform:scale(1.08); box-shadow:0 8px 20px rgba(47,107,255,.45);}
+  .nav-right{display:flex; align-items:center; gap:20px;}
+  .burger{display:none; background:none; border:none; cursor:pointer; padding:6px;}
+  .burger span{display:block; width:22px; height:2px; background:#fff; margin:5px 0; border-radius:2px;}
+  .mobile-menu{display:none; flex-direction:column; gap:4px; background:var(--navy-2); padding:8px 24px 20px;}
+  .mobile-menu a{color:#C9D2EE; padding:10px 0; font-weight:500; border-bottom:1px solid rgba(255,255,255,.06);}
+
+  /* HERO */
+  .hero{
+    max-width:1280px; margin:0 auto;
+    display:grid; grid-template-columns:1fr 1fr; gap:48px;
+    align-items:center;
+    padding:88px 24px 96px;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--card); border:1px solid var(--line);
+    padding:7px 16px; border-radius:999px;
+    font-size:.8rem; font-weight:600; color:var(--black);
+    margin-bottom:22px;
+  }
+  .eyebrow::before{content:'●'; font-size:.55rem; color:var(--blue);}
+  h1{
+    font-size:clamp(2.2rem, 4.2vw, 4.5rem);
+    line-height:1.08;
+    font-weight:800;
+    letter-spacing:-0.02em;
+  }
+  h1 .accent{color:var(--blue);}
+  .lede{
+    margin-top:20px; font-size:18px; line-height:1.65;
+    color:var(--muted); max-width:46ch;
+  }
+  .hero-ctas{display:flex; gap:14px; margin-top:32px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--blue); color:#fff; padding:14px 26px; border-radius:12px;
+    font-weight:600; font-size:.95rem; display:inline-flex; align-items:center; gap:8px;
+    border:none; cursor:pointer; transition:background .2s ease, transform .2s cubic-bezier(.4,0,.2,1), box-shadow .2s ease;
+  }
+  .btn-primary:hover{background:var(--blue-dark); transform:scale(1.08); box-shadow:0 8px 20px rgba(47,107,255,.45);}
+  .btn-secondary{
+    background:var(--card); color:var(--ink); padding:14px 26px; border-radius:12px;
+    font-weight:600; font-size:.95rem; display:inline-flex; align-items:center; gap:8px;
+    border:1px solid var(--line); cursor:pointer; transition:background .2s ease, transform .2s cubic-bezier(.4,0,.2,1), box-shadow .2s ease;
+  }
+  .btn-secondary:hover{background:var(--bg); transform:scale(1.08); box-shadow:0 8px 20px rgba(11,27,61,.2);}
+  .store-badges{display:flex; gap:12px; margin-top:28px; align-items:center;}
+  .badge{
+    display:flex; align-items:center; gap:8px; padding:9px 16px;
+    border-radius:10px; background:var(--navy); color:#fff; font-size:.78rem;
+  }
+  .badge.disabled{background:var(--card); color:var(--muted); border:1px solid var(--line);}
+  .badge b{display:block; font-size:.92rem; line-height:1.1;}
+
+  /* HERO VISUAL */
+.hero-visual{
+  position:relative; display:flex; align-items:center; justify-content:center;
+  min-height:480px;
+}
+.hero-visual-img{
+  width:100%; max-width:640px; height:auto; display:block;
+}
+  .phone{
+    position:relative; width:250px; height:510px;
+    background:#111726; border-radius:38px; border:6px solid #111726;
+    box-shadow:0 30px 60px -20px rgba(11,27,61,.35);
+    z-index:5; overflow:hidden;
+  }
+  .phone .notch{
+    position:absolute; top:0; left:50%; transform:translateX(-50%);
+    width:90px; height:22px; background:#111726; border-radius:0 0 14px 14px; z-index:3;
+  }
+  .phone-screen{
+    position:absolute; inset:0; background:linear-gradient(180deg,#EEF3FF,#F7FAFF);
+    padding:34px 14px 14px; display:flex; flex-direction:column; gap:10px;
+  }
+  .ps-row{display:flex; justify-content:space-between; font-size:.6rem; color:var(--navy); font-weight:600; padding:0 4px;}
+  .ps-card{background:#fff; border-radius:14px; padding:10px; font-size:.62rem; color:var(--muted); box-shadow:0 4px 10px rgba(20,30,60,.06);}
+  .ps-ai{background:linear-gradient(135deg,var(--blue),#6A8CFF); color:#fff; border-radius:14px; padding:12px; font-size:.62rem; display:flex; gap:8px; align-items:flex-start;}
+  .ps-ai .dot{width:18px; height:18px; border-radius:50%; background:rgba(255,255,255,.25); flex-shrink:0;}
+  .ps-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:6px;}
+  .ps-tile{border-radius:10px; padding:8px 4px; text-align:center; font-size:.58rem; font-weight:700; color:#fff;}
+  .ps-nav{margin-top:auto; background:var(--navy); border-radius:14px; height:34px;}
+
+  .float-card{
+    position:absolute; background:var(--card); border-radius:14px;
+    padding:10px 14px; box-shadow:0 10px 24px -8px rgba(20,30,60,.18);
+    display:flex; align-items:center; gap:10px; z-index:6;
+    border:1px solid var(--line); min-width:150px;
+  }
+  .float-card .ic{
+    width:34px; height:34px; border-radius:10px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:1rem;
+  }
+  .float-card .fc-title{font-size:.72rem; font-weight:700;}
+  .float-card .fc-sub{font-size:.65rem; color:var(--muted);}
+
+  .fc-medicine{top:6%; left:-6%;} .fc-medicine .ic{background:#DCEBFF; color:#2F6BFF;}
+  .fc-health{top:24%; left:-12%;} .fc-health .ic{background:#FFE3E8; color:#FF4D6A;}
+  .fc-sip{top:44%; left:-8%;} .fc-sip .ic{background:#DFF6E8; color:#22A45D;}
+  .fc-meeting{top:14%; right:-10%;} .fc-meeting .ic{background:#DCEBFF; color:#2F6BFF;}
+  .fc-bday{top:34%; right:-14%;} .fc-bday .ic{background:#FFF1D6; color:#E8A013;}
+  .fc-sub{top:54%; right:-10%;} .fc-sub .ic{background:#EDE0FF; color:#8A4DFF;}
+
+  .deco{position:absolute; z-index:4;}
+  .deco-plant{bottom:2%; left:-2%; width:70px; height:80px;}
+  .deco-books{bottom:0; left:16%; width:110px; height:36px;}
+  .deco-mug{bottom:4%; right:6%; width:60px; height:60px;}
+
+  .plant-pot{width:44px; height:36px; background:#fff; border:1px solid var(--line); border-radius:6px 6px 14px 14px; margin:0 auto;}
+  .plant-leaf{width:8px; height:44px; background:#3BAA5C; border-radius:50% 50% 50% 0; position:absolute; bottom:32px;}
+  .books-stack .b1{height:14px; background:#2F6BFF; border-radius:3px; margin-bottom:3px;}
+  .books-stack .b2{height:14px; background:#FFB020; border-radius:3px;}
+  .mug{width:52px; height:44px; background:#fff; border:1px solid var(--line); border-radius:0 0 20px 20px; position:relative;}
+  .mug::after{content:''; position:absolute; right:-14px; top:8px; width:16px; height:20px; border:5px solid #fff; border-left:none; border-radius:0 12px 12px 0;}
+
+  /* PROBLEM SECTION */
+  .problem{background:var(--navy); color:#fff; padding:80px 24px;}
+  .problem-inner{max-width:1280px; margin:0 auto;}
+  .problem-top{display:grid; grid-template-columns:1.4fr 1fr; gap:40px; align-items:end; margin-bottom:44px;}
+  .problem-eyebrow{color:#FFB020; font-size:.8rem; font-weight:700; letter-spacing:.02em; margin-bottom:14px; display:block;}
+  .problem-title{font-size:clamp(1.7rem,3vw,2.4rem); font-weight:800; line-height:1.2; letter-spacing:-0.01em;}
+  .problem-title .hl{color:#FFB020;}
+  .problem-desc{color:#AEB8DA; font-size:18px; line-height:1.6; max-width:1fr;}
+  .problem-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  .problem-card{
+    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+    border-radius:16px; padding:22px 20px; transition:transform .15s, background .15s;
+  }
+  .problem-card:hover{background:rgba(255,255,255,.07); transform:translateY(-3px);}
+  .problem-ic{width:40px; height:40px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; margin-bottom:16px;}
+  .problem-card h3{font-size:1.02rem; font-weight:700; margin-bottom:6px;}
+  .problem-card p{font-size:.85rem; color:#AEB8DA; line-height:1.55;}
+
+  @media (max-width: 980px){
+    .problem-top{grid-template-columns:1fr; text-align:center;}
+    .problem-desc{margin:0 auto;}
+    .problem-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width: 560px){
+    .problem-grid{grid-template-columns:1fr;}
+  }
+
+  @media (max-width: 980px){
+    .nav-links{display:none;}
+    .burger{display:block;}
+    .mobile-menu.open{display:flex;}
+    .hero{grid-template-columns:1fr; padding-top:56px; text-align:center;}
+    .lede{margin-left:auto; margin-right:auto;}
+    .hero-ctas, .store-badges{justify-content:center;}
+    .hero-visual{margin-top:40px; min-height:420px;}
+    .float-card{display:none;}
+    .deco{display:none;}
+  }
+  @media (max-width: 480px){
+    .nav-cta{display:none;}
+    .phone{width:210px; height:430px;}
+  }
+
+  /* SOLUTION SECTION */
+  .solution{padding:80px 24px; background:var(--bg);}
+  .solution-inner{max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
+  .solution-eyebrow{color:#FFB020; font-size:.8rem; font-weight:700; margin-bottom:14px; display:block;}
+  .solution-title{font-size:clamp(1.7rem,3vw,2.3rem); font-weight:800; line-height:1.22; margin-bottom:14px;}
+  .solution-title .blue{color:var(--blue);}
+  .solution-desc{color:var(--muted); font-size:17px; line-height:1.6; max-width:1fr; margin-bottom:32px;}
+
+  .illustration{
+  position:relative; border-radius:22px; overflow:hidden; min-height:260px;
+}
+.illustration-img{width:100%; height:auto; display:block; border-radius:22px;}
+
+.phone-carousel{position:relative; display:flex; align-items:center; justify-content:center; min-height:420px;}
+.carousel-frame{
+  position:relative; width:260px; height: 500px; border-radius:32px; overflow:hidden;
+  box-shadow:0 24px 50px -18px rgba(11,27,61,.4);
+}
+.carousel-slide{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  opacity:0; transition:opacity .35s ease;
+}
+.carousel-slide.active{opacity:1;}
+.cp-dots{position:absolute; bottom:-26px; left:50%; transform:translateX(-50%); display:flex; gap:6px;}
+.cp-dots span{cursor:pointer; transition:all .3s ease; width:6px; height:6px; border-radius:50%; background:var(--line);}
+.cp-dots span.active{background:var(--blue); width:18px; border-radius:4px;}
+.cp-next{
+  position:absolute; right:-10px; top:50%; transform:translateY(-50%);
+  width:40px; height:40px; border-radius:50%; background:#fff; border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  box-shadow:0 8px 18px -6px rgba(20,30,60,.15); z-index:5;
+}
+
+  @media (max-width: 980px){
+    .solution-inner{grid-template-columns:1fr; text-align:center;}
+    .solution-desc{margin:0 auto 32px;}
+    .phone-carousel{margin-top:20px;}
+    .carousel-phone.dim{display:none;}
+  }
+  @media (max-width: 480px){
+    .carousel-phone{width:190px; height:340px; padding:18px 12px;}
+  }
+
+  /* STAY AHEAD SECTION */
+  .stayahead{background:var(--navy); padding:80px 24px; text-align:center;}
+  .stayahead-eyebrow{color:#FFB020; font-size:.8rem; font-weight:700; display:block; margin-bottom:14px;}
+  .stayahead h2{color:#fff; font-size:clamp(1.7rem,3vw,2.3rem); font-weight:800; margin-bottom:12px;}
+  .stayahead-sub{color:#AEB8DA; font-size:1rem; margin-bottom:48px;}
+  .compare{max-width:1000px; margin:0 auto; display:flex; align-items:center; gap:24px;}
+  .compare-panel{
+    flex:1; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+    border-radius:18px; padding:26px 22px;
+  }
+  .compare-panel.with{border-color:var(--blue); background:rgba(47,107,255,.08);}
+  .compare-label{font-size:.72rem; font-weight:700; letter-spacing:.03em; color:#8A93B5; text-align:left; margin-bottom:20px;}
+  .compare-panel.with .compare-label{color:#8FB4FF;}
+  .compare-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+  .compare-item{display:flex; flex-direction:column; align-items:center; gap:8px;}
+  .compare-ic{width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem; background:rgba(255,255,255,.06); color:#AEB8DA;}
+  .compare-panel.with .compare-ic{background:rgba(47,107,255,.18); color:#8FB4FF;}
+  .compare-item span{font-size:.72rem; color:#C9D2EE; font-weight:600;}
+  .compare-arrow{
+    width:46px; height:46px; border-radius:50%; background:#FFB020; color:var(--navy);
+    display:flex; align-items:center; justify-content:center; font-size:1.2rem; font-weight:700;
+    flex-shrink:0;
+  }
+
+  @media (max-width: 760px){
+    .compare{flex-direction:column;}
+    .compare-arrow{transform:rotate(90deg);}
+    .compare-grid{grid-template-columns:repeat(4,1fr);}
+  }
+  @media (max-width: 480px){
+    .compare-grid{grid-template-columns:repeat(2,1fr); row-gap:18px;}
+  }
+
+  /* HOW IT WORKS SECTION */
+  .howitworks{padding:80px 24px; background:var(--bg);}
+  .hiw-inner{max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
+.hiw-visual{
+  position:relative; border-radius:22px; overflow:hidden; min-height:280px;
+  display:flex; align-items:center; justify-content:center;
+}
+.hiw-visual-img{width:100%; height:auto; display:block; border-radius:22px;}
+
+  .hiw-eyebrow{color:#FFB020; font-size:.8rem; font-weight:700; display:block; margin-bottom:14px;}
+  .hiw-title{font-size:clamp(1.7rem,3vw,2.3rem); font-weight:800; margin-bottom:30px;}
+  .hiw-steps{display:flex; flex-direction:column; gap:14px;}
+  .hiw-step{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:18px 20px; display:flex; align-items:flex-start; gap:16px;
+  }
+  .hiw-num{
+    width:32px; height:32px; border-radius:9px; background:#DCEBFF; color:var(--blue);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.85rem; flex-shrink:0;
+  }
+  .hiw-step h3{font-size:.98rem; font-weight:700; margin-bottom:4px;}
+  .hiw-step p{font-size:.85rem; color:var(--muted); line-height:1.5;}
+  .hiw-ic{margin-left:auto; font-size:1.1rem; color:var(--blue); flex-shrink:0; padding-top:2px;}
+
+  @media (max-width: 980px){
+    .hiw-inner{grid-template-columns:1fr;}
+    .hiw-title{text-align:center;}
+  }
+
+  /* EXPERIENCE SECTION */
+  .experience{background:var(--navy); padding:80px 24px; text-align:center;}
+  .exp-eyebrow{color:#FFB020; font-size:.8rem; font-weight:700; display:block; margin-bottom:14px;}
+  .experience h2{color:#fff; font-size:clamp(1.7rem,3vw,2.3rem); font-weight:800; margin-bottom:10px;}
+  .exp-sub{color:#AEB8DA; font-size:.98rem; max-width:60ch; margin:0 auto 50px;}
+  .exp-phones{display:flex; justify-content:center; align-items:center; gap:28px; flex-wrap:wrap;}
+
+  .exp-splash{
+    width:230px; height:470px; border-radius:34px; border:6px solid #06122B;
+    background:linear-gradient(180deg,#12224D,#0A1730);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+    position:relative;
+  }
+  .exp-splash .bell{font-size:2.6rem;}
+  .exp-splash .brand{color:#fff; font-weight:800; font-size:1.3rem;}
+  .exp-splash .brand .plus{color:#FFB020;}
+  .exp-splash .tag{color:#8FA0D0; font-size:.72rem;}
+  .exp-splash .loading{position:absolute; bottom:24px; color:#5C6EA0; font-size:.62rem; letter-spacing:.05em;}
+
+  .exp-app{
+    width:230px; height:470px; border-radius:34px; border:6px solid #0E1729;
+    background:linear-gradient(180deg,#EEF3FF,#F7FAFF); text-align:left;
+    padding:22px 14px; display:flex; flex-direction:column; gap:10px; color:var(--navy);
+  }
+  .exp-app .top{display:flex; justify-content:space-between; font-size:.68rem; font-weight:700;}
+  .exp-app .badges{display:flex; gap:6px;}
+  .exp-app .badges div{flex:1; height:26px; border-radius:8px; color:#fff; font-size:.62rem; display:flex; align-items:center; justify-content:center; font-weight:700;}
+  .exp-app .ai{background:linear-gradient(135deg,var(--blue),#6A8CFF); color:#fff; border-radius:12px; padding:10px; font-size:.6rem; display:flex; gap:8px;}
+  .exp-app .stats{display:flex; justify-content:space-between; font-size:.62rem; color:var(--muted); background:#fff; border-radius:12px; padding:10px; box-shadow:0 4px 10px rgba(20,30,60,.06);}
+  .exp-app .timeline{background:#fff; border-radius:12px; padding:10px; font-size:.62rem; box-shadow:0 4px 10px rgba(20,30,60,.06);}
+  .exp-app .timeline b{display:block; font-size:.68rem; margin-bottom:4px;}
+  .exp-app .navbar{margin-top:auto; background:var(--navy); border-radius:12px; height:32px;}
+
+  @media (max-width: 560px){
+    .exp-splash, .exp-app{width:190px; height:390px;}
+  }
+
+  /* PREMIUM SECTION */
+  .premium{padding:80px 24px; background:var(--bg); text-align:center;}
+  .premium-eyebrow{color:#FFB020; font-size:.8rem; font-weight:700; display:block; margin-bottom:14px;}
+  .premium h2{font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; margin-bottom:10px;}
+  .premium h2 .blue{color:var(--blue);}
+  .premium-sub{color:var(--muted); font-size:.98rem; margin-bottom:48px;}
+
+  .premium-panel{
+  max-width:1100px; margin:0 auto; border-radius:22px; overflow:hidden;
+}
+.premium-panel-img{width:100%; height:auto; display:block;}
+
+  @media (max-width: 900px){
+    .premium-panel{grid-template-columns:1fr; text-align:center;}
+    .pp-col-title{justify-content:center;}
+    .pp-item{justify-content:flex-start;}
+  }
+
+  /* PRICING SECTION */
+  .pricing{padding:80px 24px; background:var(--bg); text-align:center;}
+  .pricing-eyebrow{color:#FFB020; font-size:.8rem; font-weight:700; display:block; margin-bottom:14px;}
+  .pricing h2{font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; margin-bottom:10px;}
+  .pricing-sub{color:var(--muted); font-size:.98rem; margin-bottom:48px;}
+  .pricing-grid{max-width:1000px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-items:start;}
+  .plan{
+    background:var(--card); border:1px solid var(--line); border-radius:18px;
+    padding:26px 22px 28px; text-align:left; position:relative;
+  }
+  .plan.popular{background:var(--navy); color:#fff; transform:translateY(-14px); box-shadow:0 24px 50px -20px rgba(11,27,61,.4);}
+  .plan-badge{position:absolute; top:-13px; left:22px; background:#FFB020; color:var(--navy); font-size:.65rem; font-weight:800; padding:4px 12px; border-radius:999px;}
+  .plan-tier{font-size:.72rem; font-weight:700; color:var(--blue); margin-bottom:10px;}
+  .plan.popular .plan-tier{color:#FFB020;}
+  .plan-price{font-size:1.9rem; font-weight:800; margin-bottom:4px;}
+  .plan-price span{font-size:.8rem; font-weight:500; color:var(--muted);}
+  .plan.popular .plan-price span{color:#AEB8DA;}
+  .plan-desc{font-size:.8rem; color:var(--muted); margin-bottom:18px; min-height:34px;}
+  .plan.popular .plan-desc{color:#C9D2EE;}
+  .plan-features{list-style:none; margin-bottom:22px;}
+  .plan-features li{display:flex; align-items:flex-start; gap:8px; font-size:.8rem; padding:5px 0; color:var(--ink);}
+  .plan.popular .plan-features li{color:#E7EBFA;}
+  .plan-features li::before{content:'✓'; color:var(--blue); font-weight:700;}
+  .plan.popular .plan-features li::before{color:#FFB020;}
+  .plan-btn{display:block; width:100%; text-align:center; padding:12px; border-radius:10px; font-weight:700; font-size:.85rem; border:1px solid var(--blue); color:var(--blue); background:transparent; cursor:pointer; transition:background .2s ease, transform .2s cubic-bezier(.4,0,.2,1), box-shadow .2s ease;}
+  .plan-btn:hover{transform:scale(1.08); box-shadow:0 8px 20px rgba(47,107,255,.35);}
+  .plan.popular .plan-btn{background:#FFB020; border-color:#FFB020; color:var(--navy);}
+  .plan.popular .plan-btn:hover{box-shadow:0 8px 20px rgba(255,176,32,.45);}
+
+  @media (max-width: 900px){
+    .pricing-grid{grid-template-columns:1fr; max-width:400px;}
+    .plan.popular{transform:none; order:-1;}
+  }
+  .solution-title .orange{color:#FFB020;}
+
+  /* FINAL CTA SECTION */
+  .final-cta{background:var(--navy); padding:80px 24px;}
+  .fc-inner{max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1.1fr; gap:48px; align-items:center;}
+  .fc-illustration{
+  position:relative; border-radius:22px; overflow:hidden; min-height:220px;
+}
+.fc-illustration-img{width:100%; height:auto; display:block; border-radius:22px;}
+
+ .fc-brand{margin-bottom:24px;}
+.fc-logo{height:81px; width:auto; display:block;}
+  .final-cta h2{color:#fff; font-size:clamp(1.7rem,3vw,2.4rem); font-weight:800; line-height:1.2; margin-bottom:14px;}
+  .final-cta h2 .blue{color:#6FA0FF;}
+  .fc-sub{color:#AEB8DA; font-size:.98rem; margin-bottom:28px;}
+  .fc-buttons{display:flex; gap:14px; margin-bottom:26px; flex-wrap:wrap;}
+  .fc-store{display:flex; gap:12px;}
+  .fc-store .badge{background:#0A1730; border:1px solid rgba(255,255,255,.1);}
+
+  @media (max-width: 900px){
+    .fc-inner{grid-template-columns:1fr; text-align:center;}
+    .fc-buttons, .fc-store{justify-content:center;}
+    .fc-brand{justify-content:center;}
+    .fc-illustration{margin-top:20px;}
+  }
+
+  /* FOOTER */
+  footer{background:var(--bg); padding:56px 24px 0;}
+  .footer-inner{max-width:1200px; margin:0 auto;}
+  .footer-top{display:grid; grid-template-columns:1.2fr 1fr 1.4fr auto; gap:32px; align-items:start; padding-bottom:36px;}
+  .footer-brand{display:flex; align-items:center; gap:10px;}
+  .footer-logo{width:230px; max-width:100%; height:auto; display:block;}
+  .footer-brand .mark{width:32px; height:32px; border-radius:9px; background:linear-gradient(145deg,var(--blue),#5C8CFF); display:flex; align-items:center; justify-content:center; font-size:.9rem;}
+  .footer-brand b{font-weight:800; font-size:1.1rem;}
+  .footer-brand .plus{color:#FFB020;}
+  .footer-tag{font-size:.72rem; color:var(--muted); margin-top:4px; margin-left:42px;}
+  .footer-nav{display:flex; flex-direction:column; gap:12px; font-size:.85rem;}
+  .footer-nav a{color:var(--ink);}
+  .footer-nav a.link{color:var(--blue);}
+  .footer-contact{display:flex; flex-direction:column; gap:14px; font-size:.8rem; color:var(--muted);}
+  .footer-contact b{display:block; color:var(--ink); font-weight:700; font-size:.78rem; margin-bottom:2px;}
+  .footer-social{display:flex; gap:10px;}
+  .footer-social a{width:34px; height:34px; border-radius:50%; background:var(--navy); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.85rem;}
+  .footer-line{border-top:1px solid var(--line); padding:20px 0; font-size:.75rem; color:var(--muted); text-align:right;}
+
+  @media (max-width: 900px){
+    .footer-top{grid-template-columns:1fr 1fr; row-gap:28px;}
+    .footer-tag{margin-left:0; margin-top:8px;}
+    .footer-social{grid-column:1 / -1;}
+    .footer-line{text-align:center;}
+  }
+  @media (max-width: 560px){
+    .footer-top{grid-template-columns:1fr; text-align:center;}
+    .footer-brand{justify-content:center;}
+    .footer-tag{margin-left:0;}
+    .footer-social{justify-content:center;}
+  }
+  /* DESKTOP SIDE PADDING — fixed 120px left/right on larger screens */
+  @media (min-width: 1200px){
+    .nav,
+    .mobile-menu,
+    .hero,
+    .problem,
+    .solution,
+    .stayahead,
+    .howitworks,
+    .experience,
+    .premium,
+    .pricing,
+    .final-cta,
+    footer{
+      padding-left:120px;
+      padding-right:120px;
+    }
+    .hero,
+    .problem,
+    .solution,
+    .stayahead,
+    .howitworks,
+    .experience,
+    .premium,
+    .pricing,
+    .final-cta{
+      padding-top:80px;
+      padding-bottom:80px;
+    }
+    /* Remove fixed-width caps so content always fills the space between
+       the fixed 120px side paddings, on every desktop screen size */
+    .nav,
+    .hero,
+    .problem-inner,
+    .solution-inner,
+    .hiw-inner,
+    .compare,
+    .premium-panel,
+    .pricing-grid,
+    .fc-inner,
+    .footer-inner{
+      max-width:none;
+    }
+  }
+
+  /* ANIMATIONS */
+  .hero{overflow-x:clip;}
+  .hero-visual-img{animation:heroSlideIn 1.1s cubic-bezier(.22,1,.36,1) .15s both;}
+  @keyframes heroSlideIn{
+    from{opacity:0; transform:translateX(140px);}
+    to{opacity:1; transform:translateX(0);}
+  }
+  .problem-card.reveal{opacity:0;}
+  .problem-card.reveal.in{
+    opacity:1;
+    animation:revealUp .7s cubic-bezier(.22,1,.36,1) backwards;
+    animation-delay:var(--d,0s);
+  }
+  @keyframes revealUp{
+    from{opacity:0; transform:translateY(36px) scale(.96);}
+    to{opacity:1; transform:translateY(0) scale(1);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero-visual-img,.problem-card.reveal.in{animation:none;}
+    .problem-card.reveal{opacity:1;}
+  }
+
+  /* STAY AHEAD — panels slide in from opposite sides */
+  .stayahead{overflow-x:clip;}
+  .compare-panel.slide-l,.compare-panel.slide-r,.compare-arrow.slide-fade{opacity:0;}
+  .compare.in .compare-panel.slide-l{animation:slideFromLeft 1s cubic-bezier(.22,1,.36,1) both;}
+  .compare.in .compare-panel.slide-r{animation:slideFromRight 1s cubic-bezier(.22,1,.36,1) both;}
+  .compare.in .compare-arrow.slide-fade{animation:fadeIn .6s ease .7s both;}
+  @keyframes slideFromLeft{from{opacity:0; transform:translateX(-140px);} to{opacity:1; transform:translateX(0);}}
+  @keyframes slideFromRight{from{opacity:0; transform:translateX(140px);} to{opacity:1; transform:translateX(0);}}
+  @keyframes fadeIn{from{opacity:0;} to{opacity:1;}}
+  @media (prefers-reduced-motion: reduce){
+    .compare-panel.slide-l,.compare-panel.slide-r,.compare-arrow.slide-fade{opacity:1;}
+    .compare.in .compare-panel,.compare.in .compare-arrow{animation:none;}
+  }
+
+  /* HOW IT WORKS — steps reveal one by one */
+  .hiw-step.reveal{opacity:0;}
+  .hiw-step.reveal.in{
+    opacity:1;
+    animation:stepReveal .8s cubic-bezier(.22,1,.36,1) backwards;
+    animation-delay:var(--d,0s);
+  }
+  @keyframes stepReveal{
+    from{opacity:0; transform:translateX(50px) scale(.96);}
+    to{opacity:1; transform:translateX(0) scale(1);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hiw-step.reveal{opacity:1;}
+    .hiw-step.reveal.in{animation:none;}
+  }
+  /* BRAND BLUE — replaces the dark navy section backgrounds with the
+     light blue from the logo icon (#0068F2) */
+  :root{--brand-blue:#0068F2;}
+  header,
+  .problem,
+  .stayahead,
+  .experience,
+  .final-cta,
+  .plan.popular{background:var(--brand-blue);}
+  .mobile-menu{background:#0057CC;}
+  .plan.popular{box-shadow:0 24px 50px -20px rgba(0,104,242,.5);}
+
+  /* text on the blue backgrounds */
+  .problem-eyebrow,.stayahead-eyebrow,.exp-eyebrow,.problem-title .hl{color:#FFC94D;}
+  .problem-desc,.problem-card p,.stayahead-sub,.exp-sub,.fc-sub,
+  .plan.popular .plan-price span,.plan.popular .plan-desc{color:rgba(255,255,255,.88);}
+  .plan.popular .plan-features li{color:#fff;}
+  .final-cta h2 .blue{color:#FFC94D;}
+
+  /* cards/panels on the blue backgrounds */
+  .problem-card{background:rgba(255,255,255,.10); border-color:rgba(255,255,255,.22);}
+  .problem-card:hover{background:rgba(255,255,255,.16);}
+  .compare-panel{background:rgba(255,255,255,.10); border-color:rgba(255,255,255,.22);}
+  .compare-panel.with{background:rgba(255,255,255,.20); border-color:#fff;}
+  .compare-label,.compare-panel.with .compare-label{color:rgba(255,255,255,.8);}
+  .compare-ic,.compare-panel.with .compare-ic{background:rgba(255,255,255,.22); color:#fff;}
+  .compare-item span{color:#fff;}
+  /* SOLUTION — left image reveals left to right on scroll */
+  .wipe-lr{opacity:0; clip-path:inset(0 100% 0 0 round 22px);}
+  .wipe-lr.in{animation:wipeLR 1.2s cubic-bezier(.22,1,.36,1) both;}
+  @keyframes wipeLR{
+    from{opacity:0; clip-path:inset(0 100% 0 0 round 22px); transform:translateX(-60px);}
+    to{opacity:1; clip-path:inset(0 0 0 0 round 22px); transform:translateX(0);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .wipe-lr{opacity:1; clip-path:none;}
+    .wipe-lr.in{animation:none;}
+  }
+  /* PRICING — all three cards the same size */
+  .pricing-grid{align-items:stretch;}
+  .plan{display:flex; flex-direction:column; height:100%;}
+  .plan.popular{transform:none;}
+  .plan-features{flex:1;}
+  /* FOOTER — layout matched to the design screenshot */
+  footer{background:linear-gradient(180deg,#F6F9FF 0%,#EAF2FF 100%); padding-top:40px;}
+  .footer-logo{width: 230px;}
+  .footer-nav{gap:14px; font-size:.8rem;}
+  .footer-contact{gap:12px; font-size:.8rem; color:var(--navy); line-height:1.45;}
+  .footer-contact b{font-weight:400; font-size:.8rem; color:var(--navy); margin-bottom:0;}
+  .footer-social a{width:28px; height:28px; font-size:.75rem;}
+  .footer-line{border-top:1px solid #C5CFE3; padding:12px 0 14px; color:var(--navy); text-align:right;}
+  @media (min-width: 901px){
+    .footer-top{grid-template-columns:33fr 22fr 45fr auto; gap:0; align-items:start; padding-bottom:28px;}
+    .footer-social{flex-direction:column; justify-content:space-between; align-self:stretch; gap:0; padding:6px 0;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <img src="images/Logo_White.svg" alt="RemindMe+ app screenshot" class="nav-logo">
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#premium">Premium Power</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="nav-cta">Download RemindMe+</button>
+      <button class="burger" id="burgerBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features">Features</a>
+    <a href="#how">How It Works</a>
+    <a href="#premium">Premium Power</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <span class="eyebrow">SMART REMINDERS.  BETTER LIFE</span>
+    <h1>You Forget.<br><span class="accent">We Remember.</span></h1>
+    <p class="lede">RemindMe+ helps you stay on top of the things that matter — from everyday tasks and health reminders to subscriptions, finances and future plans.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary"><i class="fa-solid fa-bell"></i> Get RemindMe+</button>
+      <button class="btn-secondary"><i class="fa-solid fa-play"></i> See How It Works</button>
+    </div>
+    <div class="store-badges">
+      <div class="badge">
+        <span><i class="fa-brands fa-google-play"></i></span>
+        <span><small>GET IT ON</small><b>Google Play</b></span>
+      </div>
+      <div class="badge disabled">
+        <span><i class="fa-brands fa-apple"></i></span>
+        <span><small>Download on the</small><b>App Store</b></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <img src="images/Hero_Section.png" alt="RemindMe+ app preview with reminder cards" class="hero-visual-img">
+  </div>
+</section>
+
+<section class="problem">
+  <div class="problem-inner">
+    <div class="problem-top">
+      <div>
+        <span class="problem-eyebrow">THE PROBLEM</span>
+        <h2 class="problem-title">Life Keeps Moving. <span class="hl">Important</span> Things Get Missed.</h2>
+      </div>
+      <p class="problem-desc">A missed reminder can become a missed appointment, a delayed payment, an expired subscription or something much more important.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card reveal">
+        <div class="problem-ic" style="background:#3A2A12; color:#FFB020;"><i class="fa-solid fa-pills"></i></div>
+        <h3>Missed Medicines</h3>
+        <p>Forget an important dose or health routine.</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-ic" style="background:#12332F; color:#2FD9C4;"><i class="fa-solid fa-stethoscope"></i></div>
+        <h3>Missed Checkups</h3>
+        <p>Lose track of appointments and health tests.</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-ic" style="background:#12331E; color:#3BE07A;"><i class="fa-solid fa-rotate"></i></div>
+        <h3>Missed Renewals</h3>
+        <p>Forget insurance, subscriptions or important payments.</p>
+      </div>
+      <div class="problem-card reveal">
+        <div class="problem-ic" style="background:#241236; color:#B27CFF;"><i class="fa-solid fa-clipboard-list"></i></div>
+        <h3>Missed Plans</h3>
+        <p>Let important personal and financial goals slip away.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="solution">
+  <div class="solution-inner">
+    <div>
+      <span class="solution-eyebrow">THE SOLUTION</span>
+      <h2 class="solution-title">Meet <span class="blue">Remind</span><span class="orange">Me+</span>. Your Personal Reminder System.</h2>
+      <p class="solution-desc">One place to remember, organize and stay ahead of the things that matter.</p>
+
+      <div class="illustration wipe-lr">
+        <img src="images/3rd.png" alt="RemindMe+ solution illustration" class="illustration-img">
+      </div>
+    </div>
+
+    <div class="phone-carousel">
+      <div class="carousel-frame">
+        <img src="images/carousel-1.png" alt="Onboarding screen 1" class="carousel-slide active">
+        <img src="images/carousel-2.png" alt="Onboarding screen 2" class="carousel-slide">
+        <img src="images/carousel-3.png" alt="Onboarding screen 3" class="carousel-slide">
+      </div>
+      <div class="cp-next" id="carouselNext"><i class="fa-solid fa-arrow-right"></i></div>
+      <div class="cp-dots">
+        <span class="active"></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stayahead">
+  <span class="stayahead-eyebrow">STAY AHEAD</span>
+  <h2>Stay Ahead. Don't Fall Behind.</h2>
+  <p class="stayahead-sub">The world keeps moving. Your important tasks shouldn't wait.</p>
+
+  <div class="compare">
+    <div class="compare-panel without slide-l">
+      <div class="compare-label">WITHOUT REMINDME+</div>
+      <div class="compare-grid">
+        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-circle-question"></i></div><span>Forgotten</span></div>
+        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-calendar-xmark"></i></div><span>Missed</span></div>
+        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-stopwatch"></i></div><span>Delayed</span></div>
+        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-bolt"></i></div><span>Stress</span></div>
+      </div>
+    </div>
+
+    <div class="compare-arrow slide-fade"><i class="fa-solid fa-arrow-right"></i></div>
+
+    <div class="compare-panel with slide-r">
+      <div class="compare-label">WITH REMINDME+</div>
+      <div class="compare-grid">
+        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-circle-check"></i></div><span>Remembered</span></div>
+        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-calendar-check"></i></div><span>Planned</span></div>
+        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-check"></i></div><span>Completed</span></div>
+        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-arrow-trend-up"></i></div><span>Ahead</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="howitworks">
+  <div class="hiw-inner">
+    <div class="hiw-visual">
+      <img src="images/Bot Screen.png" alt="RemindMe+ AI organised reminders illustration" class="hiw-visual-img">
+    </div>
+
+    <div>
+      <span class="hiw-eyebrow">HOW IT WORKS</span>
+      <h2 class="hiw-title">Three Steps. Zero Mental Load.</h2>
+      <div class="hiw-steps">
+        <div class="hiw-step reveal">
+          <div class="hiw-num">01</div>
+          <div><h3>Add It</h3><p>Add anything you don't want to forget.</p></div>
+          <div class="hiw-ic">+</div>
+        </div>
+        <div class="hiw-step reveal">
+          <div class="hiw-num">02</div>
+          <div><h3>Set It</h3><p>Choose when you want to be reminded.</p></div>
+          <div class="hiw-ic"><i class="fa-solid fa-calendar-days"></i></div>
+        </div>
+        <div class="hiw-step reveal">
+          <div class="hiw-num">03</div>
+          <div><h3>Get Reminded</h3><p>RemindMe+ keeps it on your radar at the right time.</p></div>
+          <div class="hiw-ic"><i class="fa-solid fa-bell"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="experience">
+  <span class="exp-eyebrow">THE REMINDME+ EXPERIENCE</span>
+  <h2>Everything You Need to Remember. In One Place.</h2>
+  <p class="exp-sub">From the moment you add a reminder to the moment it gets done, every screen is designed to keep life moving.</p>
+
+  <div class="exp-phones">
+    <img src="images/experience-1.png" alt="RemindMe+ splash screen"
+         style="width:260px; max-width:100%; height:auto; display:block; border-radius:32px;">
+    <img src="images/experience-2.png" alt="RemindMe+ home screen"
+         style="width:260px; max-width:100%; height:auto; display:block; border-radius:32px;">
+  </div>
+</section>
+
+<section class="premium">
+  <span class="premium-eyebrow">UNLOCK PREMIUM POWER</span>
+  <h2>Get <span class="blue">RemindMe+ Premium</span>. Unlock Smarter Features.</h2>
+  <p class="premium-sub">AI-powered reminders + instant SOS support to keep you smarter, safer, and ahead.</p>
+
+  <div class="premium-panel">
+    <img src="images/GO Primium card.png" alt="RemindMe+ AI Mode and SOS premium features illustration" class="premium-panel-img">
+  </div>
+</section>
+
+<section class="pricing">
+  <span class="pricing-eyebrow">PRICING</span>
+  <h2>Choose How You Want to Stay Ahead.</h2>
+  <p class="pricing-sub">Start simple or unlock the complete RemindMe+ experience.</p>
+
+  <div class="pricing-grid">
+    <div class="plan">
+      <div class="plan-tier">FREE</div>
+      <div class="plan-price">₹0</div>
+      <div class="plan-desc">For getting started with smarter reminders.</div>
+      <ul class="plan-features">
+        <li>Everyday reminders</li>
+        <li>Basic notifications</li>
+        <li>Essential reminder management</li>
+        <li>Limited reminders</li>
+      </ul>
+      <button class="plan-btn">Start Free</button>
+    </div>
+
+    <div class="plan popular">
+      <span class="plan-badge">MOST POPULAR</span>
+      <div class="plan-tier">PREMIUM</div>
+      <div class="plan-price">₹99<span>/month</span></div>
+      <div class="plan-desc">Everything You Need to Stay Ahead.</div>
+      <ul class="plan-features">
+        <li>Unlimited reminders</li>
+        <li>Smart notifications</li>
+        <li>Health reminders</li>
+        <li>Financial reminders</li>
+        <li>Subscription reminders</li>
+        <li>Advanced reminder management</li>
+        <li>Premium features</li>
+      </ul>
+      <button class="plan-btn">Get RemindMe+</button>
+    </div>
+
+    <div class="plan">
+      <div class="plan-tier">YEARLY</div>
+      <div class="plan-price">₹999<span>/year</span></div>
+      <div class="plan-desc">More value. More time saved.</div>
+      <ul class="plan-features">
+        <li>Everything in Plus</li>
+        <li>Annual savings</li>
+        <li>Premium features</li>
+        <li>New feature access</li>
+      </ul>
+      <button class="plan-btn">Go Annual</button>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="fc-inner">
+    <div class="fc-illustration">
+      <img src="images/2nd.png" alt="RemindMe+ health and reminders illustration" class="fc-illustration-img">
+    </div>
+
+    <div>
+      <div class="fc-brand"><img src="images/Logo_White.svg" alt="RemindMe+ logo" class="fc-logo"></div>
+      <h2>Stop Trying to Remember Everything.<br>Let <span class="blue">RemindMe+</span> Remember It For You.</h2>
+      <p class="fc-sub">Your meetings. Your health. Your money. Your future.</p>
+      <div class="fc-buttons">
+        <button class="btn-primary"><i class="fa-solid fa-lock"></i> Get RemindMe+</button>
+      </div>
+      <div class="fc-store">
+        <div class="badge fc-store">
+          <span><i class="fa-brands fa-google-play"></i></span>
+          <span><small>GET IT ON</small><b>Google Play</b></span>
+        </div>
+        <div class="badge fc-store">
+          <span><i class="fa-brands fa-apple"></i></span>
+          <span><small>Download on the</small><b>App Store</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand"><img src="images/Logo_Vertical.svg" alt="RemindMe+ logo" class="footer-logo"></div>
+      </div>
+
+      <div class="footer-nav">
+        <a href="#">Features</a>
+        <a href="#">How It Works</a>
+        <a href="#">Pricing</a>
+        <a href="#" class="link">Privacy Policy</a>
+      </div>
+
+      <div class="footer-contact">
+        <div><b>Email ID - Grievance</b>grievance@remindmeplus.com</div>
+        <div><b>Email ID - Support</b>support@remindmeplus.com</div>
+        <div><b>Address</b>#513, Fortune Business Tower, Wakad, Pune 411057</div>
+      </div>
+
+      <div class="footer-social">
+        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      </div>
+    </div>
+    <div class="footer-line">© 2026 RemindMe+. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  const burger = document.getElementById('burgerBtn');
+  const menu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => menu.classList.toggle('open'));
+
+  const siteHeader = document.querySelector('header');
+  let lastScrollY = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+    if (currentScrollY > lastScrollY && currentScrollY > 80) {
+      siteHeader.classList.add('header-hidden');
+      menu.classList.remove('open');
+    } else {
+      siteHeader.classList.remove('header-hidden');
+    }
+    lastScrollY = currentScrollY;
+  }, { passive: true });
+
+  // Onboarding carousel: switch slides + dots, auto-advance, pause on hover
+  const nextBtn = document.getElementById('carouselNext');
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.cp-dots span');
+  const carouselEl = document.querySelector('.phone-carousel');
+  let slideIndex = 0, carouselTimer = null;
+
+  function showSlide(i) {
+    slideIndex = (i + slides.length) % slides.length;
+    slides.forEach((el, n) => el.classList.toggle('active', n === slideIndex));
+    dots.forEach((el, n) => el.classList.toggle('active', n === slideIndex));
+  }
+  function startCarousel() {
+    stopCarousel();
+    carouselTimer = setInterval(() => showSlide(slideIndex + 1), 3000);
+  }
+  function stopCarousel() { clearInterval(carouselTimer); }
+
+  if (slides.length) {
+    nextBtn.addEventListener('click', () => { showSlide(slideIndex + 1); startCarousel(); });
+    dots.forEach((d, n) => d.addEventListener('click', () => { showSlide(n); startCarousel(); }));
+    carouselEl.addEventListener('mouseenter', stopCarousel);
+    carouselEl.addEventListener('mouseleave', startCarousel);
+    startCarousel();
+  }
+
+  // Reveal problem cards one by one when the grid scrolls into view
+  const problemCards = document.querySelectorAll('.problem-card.reveal');
+  const revealCards = grid => grid.querySelectorAll('.problem-card.reveal').forEach((c, i) => {
+    c.style.setProperty('--d', (i * 0.18) + 's');
+    c.classList.add('in');
+  });
+  const problemGrid = document.querySelector('.problem-grid');
+  if (problemGrid && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => { if (e.isIntersecting) { revealCards(e.target); obs.unobserve(e.target); } });
+    }, { threshold: 0.2 });
+    io.observe(problemGrid);
+  } else if (problemGrid) {
+    revealCards(problemGrid);
+  }
+
+  // Stay Ahead: slide the two panels in from opposite sides when in view
+  const compareEl = document.querySelector('.compare');
+  if (compareEl && 'IntersectionObserver' in window) {
+    const cio = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+    }, { threshold: 0.25 });
+    cio.observe(compareEl);
+  } else if (compareEl) {
+    compareEl.classList.add('in');
+  }
+
+  // How it works: reveal the three steps one by one when in view
+  const hiwSteps = document.querySelector('.hiw-steps');
+  const revealSteps = el => el.querySelectorAll('.hiw-step.reveal').forEach((c, i) => {
+    c.style.setProperty('--d', (i * 0.25) + 's');
+    c.classList.add('in');
+  });
+  if (hiwSteps && 'IntersectionObserver' in window) {
+    const hio = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => { if (e.isIntersecting) { revealSteps(e.target); obs.unobserve(e.target); } });
+    }, { threshold: 0.3 });
+    hio.observe(hiwSteps);
+  } else if (hiwSteps) {
+    revealSteps(hiwSteps);
+  }
+  // Solution: reveal the left image left-to-right when scrolled into view.
+  // Observe the section (not the clipped image itself): an element that is
+  // fully clipped away never counts as "visible", so it would never trigger.
+  const wipeEl = document.querySelector('.wipe-lr');
+  const wipeTrigger = document.querySelector('.solution');
+  if (wipeEl && wipeTrigger && 'IntersectionObserver' in window) {
+    const wio = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => { if (e.isIntersecting) { wipeEl.classList.add('in'); obs.disconnect(); } });
+    }, { threshold: 0.3 });
+    wio.observe(wipeTrigger);
+  } else if (wipeEl) {
+    wipeEl.classList.add('in');
+  }
+</script>
+
+</body>
+</html>
