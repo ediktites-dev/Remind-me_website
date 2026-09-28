@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="color-scheme" content="light only">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>RemindMe+ | Smart Reminders. Better Life.</title>
 <link rel="preload" href="fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
@@ -14,6 +15,7 @@
   }
 
   :root{
+    color-scheme:light;
     --navy:#0B1B3D;
     --navy-2:#102554;
     --blue:#2F6BFF;
@@ -25,14 +27,6 @@
     --line:#E6EAF5;
     padding-top:env(safe-area-inset-top,0px);
     padding-bottom:env(safe-area-inset-bottom,0px);
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg:#0A1120; --ink:#EEF1FA; --card:#141C33; --line:#232B44; --muted:#98A2C0;
-    }
-  }
-  :root[data-theme="dark"]{
-    --bg:#0A1120; --ink:#EEF1FA; --card:#141C33; --line:#232B44; --muted:#98A2C0;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-padding-top:env(safe-area-inset-top,0px); scroll-behavior:smooth;}
@@ -323,10 +317,6 @@
   display:flex; align-items:center; justify-content:center;
 }
 .hiw-visual-img{width:100%; height:auto; display:block; mix-blend-mode:multiply;}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]) .hiw-visual-img{mix-blend-mode:normal; border-radius:22px;}
-}
-:root[data-theme="dark"] .hiw-visual-img{mix-blend-mode:normal; border-radius:22px;}
 
   .hiw-eyebrow{color:#FFB020; font-size:.8rem; font-weight:700; display:block; margin-bottom:14px;}
   .hiw-title{font-size:clamp(1.7rem,3vw,2.3rem); font-weight:800; margin-bottom:30px;}
@@ -595,15 +585,49 @@
   }
   /* BRAND BLUE — replaces the dark navy section backgrounds with the
      light blue from the logo icon (#0068F2) */
-  :root{--brand-blue:#0068F2;}
+  /* gradient sampled from Dashboard_BG.png */
+  :root{
+    --brand-blue:#0032a6;
+    --brand-grad:linear-gradient(to bottom right,#061946 0%,#061946 15%,#051a4c 25%,#031e5b 35%,#01216a 45%,#00257a 55%,#002989 65%,#002d98 75%,#0032a6 85%,#003bc4 100%);
+  }
   header,
   .problem,
   .stayahead,
   .experience,
   .final-cta,
-  .plan.popular{background:var(--brand-blue);}
-  .mobile-menu{background:#0057CC;}
-  .plan.popular{box-shadow:0 24px 50px -20px rgba(0,104,242,.5);}
+  .plan.popular{background:var(--brand-blue) var(--brand-grad);}
+  .mobile-menu{background:#031e5b;}
+  .plan.popular{box-shadow:0 24px 50px -20px rgba(0,50,166,.55);}
+
+  /* blue buttons use the same gradient (thin light edge keeps them visible on dark sections) */
+  .nav-cta,
+  .btn-primary{
+    background:var(--brand-blue) var(--brand-grad);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);
+    transition:filter .2s ease, transform .2s cubic-bezier(.4,0,.2,1), box-shadow .2s ease;
+  }
+  .nav-cta:hover,
+  .btn-primary:hover{
+    background:var(--brand-blue) var(--brand-grad);
+    filter:brightness(1.3);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.45), 0 8px 20px rgba(0,50,166,.5);
+  }
+
+  /* blue text on light backgrounds uses the same gradient */
+  h1 .accent,
+  .solution-title .blue,
+  .premium h2 .blue,
+  .plan:not(.popular) .plan-tier,
+  .plan:not(.popular) .plan-btn{
+    background:var(--brand-grad);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+    -webkit-box-decoration-break:clone; box-decoration-break:clone;
+  }
+  .plan:not(.popular) .plan-btn{border-color:#0032a6;}
+  /* small icons / tiles / links can't hold a gradient fill: use the mid-tone of it */
+  .hiw-num,.hiw-ic,.footer-nav a.link,
+  .plan:not(.popular) .plan-features li::before{color:#002d98;}
 
   /* text on the blue backgrounds */
   .problem-eyebrow,.stayahead-eyebrow,.exp-eyebrow,.problem-title .hl{color:#FFC94D;}
@@ -648,6 +672,36 @@
     .footer-top{grid-template-columns:33fr 22fr 45fr auto; gap:0; align-items:start; padding-bottom:28px;}
     .footer-social{flex-direction:column; justify-content:space-between; align-self:stretch; gap:0; padding:6px 0;}
   }
+
+  /* FOOTER credit line */
+  .footer-line{display:flex; justify-content:space-between; align-items:center; gap:8px 24px; flex-wrap:wrap; text-align:left;}
+  .footer-credit{display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap;}
+  .footer-credit b{font-weight:800; letter-spacing:.02em;}
+  .footer-credit .sep{font-style:normal; opacity:.6;}
+  .in-flag{display:inline-block; vertical-align:middle; flex-shrink:0; border-radius:2px;}
+  @media (max-width: 900px){
+    .footer-line{justify-content:center; text-align:center;}
+  }
+
+  /* STAY AHEAD: dull "without" panel, highlighted "with" panel */
+  .compare-panel.without{
+    background:rgba(255,255,255,.04); border-color:rgba(255,255,255,.10);
+  }
+  .compare-panel.without .compare-label{color:rgba(255,255,255,.45);}
+  .compare-panel.without .compare-ic{background:rgba(255,255,255,.08); color:rgba(255,255,255,.4);}
+  .compare-panel.without .compare-item span{color:rgba(255,255,255,.45);}
+  .compare-panel.with{
+    background:rgba(255,255,255,.24); border:2px solid #fff;
+    box-shadow:0 0 0 4px rgba(255,255,255,.14), 0 24px 50px -14px rgba(0,0,0,.45), 0 0 44px rgba(111,160,255,.45);
+  }
+  .compare-panel.with .compare-label{color:#fff; font-weight:800;}
+  .compare-panel.with .compare-ic{background:#fff; color:#0032a6; box-shadow:0 6px 14px -4px rgba(0,0,0,.35);}
+  .compare-panel.with .compare-item span{color:#fff; font-weight:700;}
+
+  /* app download buttons: not available yet, so shown faded */
+  .app-soon{opacity:.15; cursor:default;}
+  .app-soon:hover{transform:none !important; filter:none !important; box-shadow:inset 0 0 0 1px rgba(255,255,255,.28) !important;}
+  .badge.app-soon:hover{box-shadow:none !important;}
 </style>
 </head>
 <body>
@@ -691,7 +745,7 @@
         <span><svg class="i" aria-hidden="true"><use href="#i-google-play"/></svg></span>
         <span><small>GET IT ON</small><b>Google Play</b></span>
       </div>
-      <div class="badge disabled">
+      <div class="badge app-soon" title="Coming soon">
         <span><svg class="i" aria-hidden="true"><use href="#i-apple"/></svg></span>
         <span><small>Download on the</small><b>App Store</b></span>
       </div>
@@ -905,7 +959,7 @@
 
     <div>
       <div class="fc-brand"><img loading="lazy" decoding="async" src="images/Logo_White.svg" alt="RemindMe+ logo" class="fc-logo"></div>
-      <h2>Stop Trying to Remember Everything.<br>Let <span class="blue">RemindMe+</span> Remember It For You.</h2>
+      <h2>Ahh!! you forgot, <br>Let <span class="blue">RemindMe+</span> Remember It For You.</h2>
       <p class="fc-sub">Your meetings. Your health. Your money. Your future.</p>
       <div class="fc-buttons">
         <button class="btn-primary"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg> Get RemindMe+</button>
@@ -915,7 +969,7 @@
           <span><svg class="i" aria-hidden="true"><use href="#i-google-play"/></svg></span>
           <span><small>GET IT ON</small><b>Google Play</b></span>
         </div>
-        <div class="badge fc-store">
+        <div class="badge fc-store app-soon" title="Coming soon">
           <span><svg class="i" aria-hidden="true"><use href="#i-apple"/></svg></span>
           <span><small>Download on the</small><b>App Store</b></span>
         </div>
@@ -939,7 +993,7 @@
       </div>
 
       <div class="footer-contact">
-        <div><b>Email ID - Grievance</b>grievance@remindmeplus.com</div>
+        <div><b>Email ID - Grievance</b>grievances@remindmeplus.com</div>
         <div><b>Email ID - Support</b>support@remindmeplus.com</div>
         <div><b>Address</b>#513, Fortune Business Tower, Wakad, Pune 411057</div>
       </div>
@@ -950,7 +1004,7 @@
         <a href="#" aria-label="Facebook"><svg class="i" aria-hidden="true"><use href="#i-facebook-f"/></svg></a>
       </div>
     </div>
-    <div class="footer-line">© 2026 RemindMe+. All rights reserved.</div>
+    <div class="footer-line"><span>© 2026 RemindMe+. All rights reserved @ Edikt Media Worldwide Private Limited.</span><span class="footer-credit">Developed by <b>EDIKT|ITES</b> <i class="sep">·</i> MADE IN BHARAT <svg class="in-flag" viewBox="0 0 24 16" width="24" height="16" role="img" aria-label="Indian flag"><rect width="24" height="16" rx="2" fill="#fff"/><rect width="24" height="5.33" rx="2" fill="#FF9933"/><rect y="10.67" width="24" height="5.33" rx="2" fill="#138808"/><rect y="4" width="24" height="1.33" fill="#FF9933"/><rect y="10.67" width="24" height="1.33" fill="#138808"/><g stroke="#000080" stroke-width=".3" fill="none"><circle cx="12" cy="8" r="1.9" stroke-width=".4"/><line x1="10.30" y1="8.00" x2="13.70" y2="8.00"/><line x1="10.36" y1="7.56" x2="13.64" y2="8.44"/><line x1="10.53" y1="7.15" x2="13.47" y2="8.85"/><line x1="10.80" y1="6.80" x2="13.20" y2="9.20"/><line x1="11.15" y1="6.53" x2="12.85" y2="9.47"/><line x1="11.56" y1="6.36" x2="12.44" y2="9.64"/><line x1="12.00" y1="6.30" x2="12.00" y2="9.70"/><line x1="12.44" y1="6.36" x2="11.56" y2="9.64"/><line x1="12.85" y1="6.53" x2="11.15" y2="9.47"/><line x1="13.20" y1="6.80" x2="10.80" y2="9.20"/><line x1="13.47" y1="7.15" x2="10.53" y2="8.85"/><line x1="13.64" y1="7.56" x2="10.36" y2="8.44"/></g><rect width="24" height="16" rx="2" fill="none" stroke="#C5CFE3" stroke-width=".5"/></svg></span></div>
   </div>
 </footer>
 
