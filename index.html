@@ -4,17 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>RemindMe+ | Smart Reminders. Better Life.</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preload" href="fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="images/Hero_Section.webp" as="image" type="image/webp" fetchpriority="high">
 <style>
   @font-face{
     font-family:'Satoshi';
     src:url('fonts/Satoshi-Variable.woff2') format('woff2');
     font-weight:300 900; font-style:normal; font-display:swap;
-  }
-  @font-face{
-    font-family:'Satoshi';
-    src:url('fonts/Satoshi-VariableItalic.woff2') format('woff2');
-    font-weight:300 900; font-style:italic; font-display:swap;
   }
 
   :root{
@@ -51,6 +47,7 @@
     overflow-x:hidden;
   }
   img{max-width:100%; display:block;}
+  .i{width:1em; height:1em; fill:currentColor; display:inline-block; vertical-align:-.125em; flex-shrink:0;}
   a{color:inherit; text-decoration:none;}
 
   /* NAV */
@@ -262,7 +259,7 @@
 }
 .carousel-slide{
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  opacity:0; transition:opacity .35s ease;
+  opacity:0; transition:opacity .3s ease;
 }
 .carousel-slide.active{opacity:1;}
 .cp-dots{position:absolute; bottom:-26px; left:50%; transform:translateX(-50%); display:flex; gap:6px;}
@@ -325,7 +322,11 @@
   position:relative; border-radius:22px; overflow:hidden; min-height:280px;
   display:flex; align-items:center; justify-content:center;
 }
-.hiw-visual-img{width:100%; height:auto; display:block; border-radius:22px;}
+.hiw-visual-img{width:100%; height:auto; display:block; mix-blend-mode:multiply;}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .hiw-visual-img{mix-blend-mode:normal; border-radius:22px;}
+}
+:root[data-theme="dark"] .hiw-visual-img{mix-blend-mode:normal; border-radius:22px;}
 
   .hiw-eyebrow{color:#FFB020; font-size:.8rem; font-weight:700; display:block; margin-bottom:14px;}
   .hiw-title{font-size:clamp(1.7rem,3vw,2.3rem); font-weight:800; margin-bottom:30px;}
@@ -537,21 +538,25 @@
     }
   }
 
+  /* PERFORMANCE: skip layout/paint of offscreen sections */
+  .solution,.stayahead,.howitworks,.experience,.premium,.pricing,.final-cta,footer{content-visibility:auto; contain-intrinsic-size:auto 700px;}
+  .hero-visual-img,.carousel-slide,.problem-card,.hiw-step,.compare-panel,.wipe-lr{will-change:auto;}
+
   /* ANIMATIONS */
   .hero{overflow-x:clip;}
-  .hero-visual-img{animation:heroSlideIn 1.1s cubic-bezier(.22,1,.36,1) .15s both;}
+  .hero-visual-img{animation:heroSlideIn .5s ease-out both;}
   @keyframes heroSlideIn{
-    from{opacity:0; transform:translateX(140px);}
+    from{opacity:0; transform:translateX(30px);}
     to{opacity:1; transform:translateX(0);}
   }
   .problem-card.reveal{opacity:0;}
   .problem-card.reveal.in{
     opacity:1;
-    animation:revealUp .7s cubic-bezier(.22,1,.36,1) backwards;
+    animation:revealUp .45s ease-out backwards;
     animation-delay:var(--d,0s);
   }
   @keyframes revealUp{
-    from{opacity:0; transform:translateY(36px) scale(.96);}
+    from{opacity:0; transform:translateY(20px);}
     to{opacity:1; transform:translateY(0) scale(1);}
   }
   @media (prefers-reduced-motion: reduce){
@@ -562,11 +567,11 @@
   /* STAY AHEAD — panels slide in from opposite sides */
   .stayahead{overflow-x:clip;}
   .compare-panel.slide-l,.compare-panel.slide-r,.compare-arrow.slide-fade{opacity:0;}
-  .compare.in .compare-panel.slide-l{animation:slideFromLeft 1s cubic-bezier(.22,1,.36,1) both;}
-  .compare.in .compare-panel.slide-r{animation:slideFromRight 1s cubic-bezier(.22,1,.36,1) both;}
-  .compare.in .compare-arrow.slide-fade{animation:fadeIn .6s ease .7s both;}
-  @keyframes slideFromLeft{from{opacity:0; transform:translateX(-140px);} to{opacity:1; transform:translateX(0);}}
-  @keyframes slideFromRight{from{opacity:0; transform:translateX(140px);} to{opacity:1; transform:translateX(0);}}
+  .compare.in .compare-panel.slide-l{animation:slideFromLeft .55s ease-out both;}
+  .compare.in .compare-panel.slide-r{animation:slideFromRight .55s ease-out both;}
+  .compare.in .compare-arrow.slide-fade{animation:fadeIn .35s ease .3s both;}
+  @keyframes slideFromLeft{from{opacity:0; transform:translateX(-40px);} to{opacity:1; transform:translateX(0);}}
+  @keyframes slideFromRight{from{opacity:0; transform:translateX(40px);} to{opacity:1; transform:translateX(0);}}
   @keyframes fadeIn{from{opacity:0;} to{opacity:1;}}
   @media (prefers-reduced-motion: reduce){
     .compare-panel.slide-l,.compare-panel.slide-r,.compare-arrow.slide-fade{opacity:1;}
@@ -577,11 +582,11 @@
   .hiw-step.reveal{opacity:0;}
   .hiw-step.reveal.in{
     opacity:1;
-    animation:stepReveal .8s cubic-bezier(.22,1,.36,1) backwards;
+    animation:stepReveal .45s ease-out backwards;
     animation-delay:var(--d,0s);
   }
   @keyframes stepReveal{
-    from{opacity:0; transform:translateX(50px) scale(.96);}
+    from{opacity:0; transform:translateX(24px);}
     to{opacity:1; transform:translateX(0) scale(1);}
   }
   @media (prefers-reduced-motion: reduce){
@@ -616,14 +621,14 @@
   .compare-ic,.compare-panel.with .compare-ic{background:rgba(255,255,255,.22); color:#fff;}
   .compare-item span{color:#fff;}
   /* SOLUTION — left image reveals left to right on scroll */
-  .wipe-lr{opacity:0; clip-path:inset(0 100% 0 0 round 22px);}
-  .wipe-lr.in{animation:wipeLR 1.2s cubic-bezier(.22,1,.36,1) both;}
+  .wipe-lr{opacity:0;}
+  .wipe-lr.in{animation:wipeLR .6s ease-out both;}
   @keyframes wipeLR{
-    from{opacity:0; clip-path:inset(0 100% 0 0 round 22px); transform:translateX(-60px);}
-    to{opacity:1; clip-path:inset(0 0 0 0 round 22px); transform:translateX(0);}
+    from{opacity:0; transform:translateX(-30px);}
+    to{opacity:1; transform:translateX(0);}
   }
   @media (prefers-reduced-motion: reduce){
-    .wipe-lr{opacity:1; clip-path:none;}
+    .wipe-lr{opacity:1;}
     .wipe-lr.in{animation:none;}
   }
   /* PRICING — all three cards the same size */
@@ -646,10 +651,11 @@
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-bell" viewBox="0 0 448 512"><path d="M224 0c-17.7 0-32 14.3-32 32l0 3.2C119 50 64 114.6 64 192l0 21.7c0 48.1-16.4 94.8-46.4 132.4L7.8 358.3C2.7 364.6 0 372.4 0 380.5 0 400.1 15.9 416 35.5 416l376.9 0c19.6 0 35.5-15.9 35.5-35.5 0-8.1-2.7-15.9-7.8-22.2l-9.8-12.2C400.4 308.5 384 261.8 384 213.7l0-21.7c0-77.4-55-142-128-156.8l0-3.2c0-17.7-14.3-32-32-32zM162 464c7.1 27.6 32.2 48 62 48s54.9-20.4 62-48l-124 0z"/></symbol><symbol id="i-play" viewBox="0 0 448 512"><path d="M91.2 36.9c-12.4-6.8-27.4-6.5-39.6 .7S32 57.9 32 72l0 368c0 14.1 7.5 27.2 19.6 34.4s27.2 7.5 39.6 .7l336-184c12.8-7 20.8-20.5 20.8-35.1s-8-28.1-20.8-35.1l-336-184z"/></symbol><symbol id="i-pills" viewBox="0 0 512 512"><path d="M64 112c0-26.5 21.5-48 48-48s48 21.5 48 48l0 112-96 0 0-112zM176 368c0-48.7 18.1-93.2 48-127l0-129C224 50.1 173.9 0 112 0S0 50.1 0 112L0 400c0 61.9 50.1 112 112 112 37.3 0 70.3-18.2 90.7-46.3-17-28.6-26.7-62-26.7-97.7zm64.7 67.4c4.6 8.7 16.3 9.7 23.3 2.7L438.1 264c7-7 6-18.7-2.7-23.3-20.1-10.7-43-16.7-67.4-16.7-79.5 0-144 64.5-144 144 0 24.3 6 47.3 16.7 67.4zM297.9 472c-7 7-6 18.7 2.7 23.3 20.1 10.7 43 16.7 67.4 16.7 79.5 0 144-64.5 144-144 0-24.3-6-47.3-16.7-67.4-4.6-8.7-16.3-9.7-23.3-2.7L297.9 472z"/></symbol><symbol id="i-stethoscope" viewBox="0 0 576 512"><path d="M32 48C32 21.5 53.5 0 80 0l48 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-32 0 0 128c0 53 43 96 96 96s96-43 96-96l0-128-32 0c-17.7 0-32-14.3-32-32S238.3 0 256 0l48 0c26.5 0 48 21.5 48 48l0 144c0 77.4-55 142-128 156.8l0 19.2c0 61.9 50.1 112 112 112s112-50.1 112-112l0-85.5c-37.3-13.2-64-48.7-64-90.5 0-53 43-96 96-96s96 43 96 96c0 41.8-26.7 77.4-64 90.5l0 85.5c0 97.2-78.8 176-176 176S160 465.2 160 368l0-19.2C87 334 32 269.4 32 192L32 48zM480 224a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></symbol><symbol id="i-rotate" viewBox="0 0 512 512"><path d="M480.1 192l7.9 0c13.3 0 24-10.7 24-24l0-144c0-9.7-5.8-18.5-14.8-22.2S477.9 .2 471 7L419.3 58.8C375 22.1 318 0 256 0 127 0 20.3 95.4 2.6 219.5 .1 237 12.2 253.2 29.7 255.7s33.7-9.7 36.2-27.1C79.2 135.5 159.3 64 256 64 300.4 64 341.2 79 373.7 104.3L327 151c-6.9 6.9-8.9 17.2-5.2 26.2S334.3 192 344 192l136.1 0zm29.4 100.5c2.5-17.5-9.7-33.7-27.1-36.2s-33.7 9.7-36.2 27.1c-13.3 93-93.4 164.5-190.1 164.5-44.4 0-85.2-15-117.7-40.3L185 361c6.9-6.9 8.9-17.2 5.2-26.2S177.7 320 168 320L24 320c-13.3 0-24 10.7-24 24L0 488c0 9.7 5.8 18.5 14.8 22.2S34.1 511.8 41 505l51.8-51.8C137 489.9 194 512 256 512 385 512 491.7 416.6 509.4 292.5z"/></symbol><symbol id="i-clipboard-list" viewBox="0 0 384 512"><path d="M311.4 32l8.6 0c35.3 0 64 28.7 64 64l0 352c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 96C0 60.7 28.7 32 64 32l8.6 0C83.6 12.9 104.3 0 128 0L256 0c23.7 0 44.4 12.9 55.4 32zM248 112c13.3 0 24-10.7 24-24s-10.7-24-24-24L136 64c-13.3 0-24 10.7-24 24s10.7 24 24 24l112 0zM128 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm32 0c0 13.3 10.7 24 24 24l112 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-112 0c-13.3 0-24 10.7-24 24zm0 128c0 13.3 10.7 24 24 24l112 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-112 0c-13.3 0-24 10.7-24 24zM96 416a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></symbol><symbol id="i-arrow-right" viewBox="0 0 512 512"><path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l370.7 0-105.4 105.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></symbol><symbol id="i-circle-question" viewBox="0 0 512 512"><path d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-336c-17.7 0-32 14.3-32 32 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-44.2 35.8-80 80-80s80 35.8 80 80c0 47.2-36 67.2-56 74.5l0 3.8c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-8.1c0-20.5 14.8-35.2 30.1-40.2 6.4-2.1 13.2-5.5 18.2-10.3 4.3-4.2 7.7-10 7.7-19.6 0-17.7-14.3-32-32-32zM224 368a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></symbol><symbol id="i-calendar-xmark" viewBox="0 0 448 512"><path d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 32 0c35.3 0 64 28.7 64 64l0 288c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 128C0 92.7 28.7 64 64 64l32 0 0-32c0-17.7 14.3-32 32-32zM291.9 220.1c-9.4-9.4-24.6-9.4-33.9 0l-33.9 33.9-33.9-33.9c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l33.9 33.9-33.9 33.9c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l33.9-33.9 33.9 33.9c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-33.9-33.9 33.9-33.9c9.4-9.4 9.4-24.6 0-33.9z"/></symbol><symbol id="i-stopwatch" viewBox="0 0 448 512"><path d="M168.5 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l32 0 0 25.3c-108 11.9-192 103.5-192 214.7 0 119.3 96.7 216 216 216s216-96.7 216-216c0-39.8-10.8-77.1-29.6-109.2l28.2-28.2c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-23.4 23.4c-32.9-30.2-75.2-50.3-122-55.5l0-25.3 32 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-112 0zm80 184l0 104c0 13.3-10.7 24-24 24s-24-10.7-24-24l0-104c0-13.3 10.7-24 24-24s24 10.7 24 24z"/></symbol><symbol id="i-bolt" viewBox="0 0 448 512"><path d="M338.8-9.9c11.9 8.6 16.3 24.2 10.9 37.8L271.3 224 416 224c13.5 0 25.5 8.4 30.1 21.1s.7 26.9-9.6 35.5l-288 240c-11.3 9.4-27.4 9.9-39.3 1.3s-16.3-24.2-10.9-37.8L176.7 288 32 288c-13.5 0-25.5-8.4-30.1-21.1s-.7-26.9 9.6-35.5l288-240c11.3-9.4 27.4-9.9 39.3-1.3z"/></symbol><symbol id="i-circle-check" viewBox="0 0 512 512"><path d="M256 512a256 256 0 1 1 0-512 256 256 0 1 1 0 512zM374 145.7c-10.7-7.8-25.7-5.4-33.5 5.3L221.1 315.2 169 263.1c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l72 72c5 5 11.8 7.5 18.8 7s13.4-4.1 17.5-9.8L379.3 179.2c7.8-10.7 5.4-25.7-5.3-33.5z"/></symbol><symbol id="i-calendar-check" viewBox="0 0 448 512"><path d="M320 0c17.7 0 32 14.3 32 32l0 32 32 0c35.3 0 64 28.7 64 64l0 288c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 128C0 92.7 28.7 64 64 64l32 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32zm22 161.7c-10.7-7.8-25.7-5.4-33.5 5.3L189.1 331.2 137 279.1c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l72 72c5 5 11.9 7.5 18.8 7s13.4-4.1 17.5-9.8L347.3 195.2c7.8-10.7 5.4-25.7-5.3-33.5z"/></symbol><symbol id="i-check" viewBox="0 0 448 512"><path d="M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z"/></symbol><symbol id="i-arrow-trend-up" viewBox="0 0 576 512"><path d="M384 160c-17.7 0-32-14.3-32-32s14.3-32 32-32l160 0c17.7 0 32 14.3 32 32l0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-82.7-169.4 169.4c-12.5 12.5-32.8 12.5-45.3 0L192 269.3 54.6 406.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160c12.5-12.5 32.8-12.5 45.3 0L320 306.7 466.7 160 384 160z"/></symbol><symbol id="i-calendar-days" viewBox="0 0 448 512"><path d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 32 0c35.3 0 64 28.7 64 64l0 288c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 128C0 92.7 28.7 64 64 64l32 0 0-32c0-17.7 14.3-32 32-32zM64 240l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm128 0l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM64 368l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zm112 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16z"/></symbol><symbol id="i-lock" viewBox="0 0 384 512"><path d="M128 96l0 64 128 0 0-64c0-35.3-28.7-64-64-64s-64 28.7-64 64zM64 160l0-64C64 25.3 121.3-32 192-32S320 25.3 320 96l0 64c35.3 0 64 28.7 64 64l0 224c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64L0 224c0-35.3 28.7-64 64-64z"/></symbol><symbol id="i-google-play" viewBox="0 0 448 512"><path d="M293.6 234.3L72.9 13 353.7 174.2 293.6 234.3zM15.3 0C2.3 6.8-6.4 19.2-6.4 35.3l0 441.3c0 16.1 8.7 28.5 21.7 35.3L271.9 255.9 15.3 0zM440.5 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM72.9 499L353.7 337.8 293.6 277.7 72.9 499z"/></symbol><symbol id="i-apple" viewBox="0 0 384 512"><path d="M319.1 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7-55.8 .9-115.1 44.5-115.1 133.2 0 26.2 4.8 53.3 14.4 81.2 12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zM262.5 104.5c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></symbol><symbol id="i-linkedin-in" viewBox="0 0 448 512"><path d="M100.3 448l-92.9 0 0-299.1 92.9 0 0 299.1zM53.8 108.1C24.1 108.1 0 83.5 0 53.8 0 39.5 5.7 25.9 15.8 15.8s23.8-15.8 38-15.8 27.9 5.7 38 15.8 15.8 23.8 15.8 38c0 29.7-24.1 54.3-53.8 54.3zM447.9 448l-92.7 0 0-145.6c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7l0 148.1-92.8 0 0-299.1 89.1 0 0 40.8 1.3 0c12.4-23.5 42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 142.3l0 164.3-.1 0z"/></symbol><symbol id="i-instagram" viewBox="0 0 448 512"><path d="M224.3 141a115 115 0 1 0 -.6 230 115 115 0 1 0 .6-230zm-.6 40.4a74.6 74.6 0 1 1 .6 149.2 74.6 74.6 0 1 1 -.6-149.2zm93.4-45.1a26.8 26.8 0 1 1 53.6 0 26.8 26.8 0 1 1 -53.6 0zm129.7 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM399 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></symbol><symbol id="i-facebook-f" viewBox="0 0 320 512"><path d="M80 299.3l0 212.7 116 0 0-212.7 86.5 0 18-97.8-104.5 0 0-34.6c0-51.7 20.3-71.5 72.7-71.5 16.3 0 29.4 .4 37 1.2l0-88.7C291.4 4 256.4 0 236.2 0 129.3 0 80 50.5 80 159.4l0 42.1-66 0 0 97.8 66 0z"/></symbol></svg>
 
 <header>
   <nav class="nav">
-    <img src="images/Logo_White.svg" alt="RemindMe+ app screenshot" class="nav-logo">
+    <img fetchpriority="high" src="images/Logo_White.svg" alt="RemindMe+ app screenshot" class="nav-logo">
     <ul class="nav-links">
       <li><a href="#features">Features</a></li>
       <li><a href="#how">How It Works</a></li>
@@ -677,23 +683,23 @@
     <h1>You Forget.<br><span class="accent">We Remember.</span></h1>
     <p class="lede">RemindMe+ helps you stay on top of the things that matter — from everyday tasks and health reminders to subscriptions, finances and future plans.</p>
     <div class="hero-ctas">
-      <button class="btn-primary"><i class="fa-solid fa-bell"></i> Get RemindMe+</button>
-      <button class="btn-secondary"><i class="fa-solid fa-play"></i> See How It Works</button>
+      <button class="btn-primary"><svg class="i" aria-hidden="true"><use href="#i-bell"/></svg> Get RemindMe+</button>
+      <button class="btn-secondary"><svg class="i" aria-hidden="true"><use href="#i-play"/></svg> See How It Works</button>
     </div>
     <div class="store-badges">
       <div class="badge">
-        <span><i class="fa-brands fa-google-play"></i></span>
+        <span><svg class="i" aria-hidden="true"><use href="#i-google-play"/></svg></span>
         <span><small>GET IT ON</small><b>Google Play</b></span>
       </div>
       <div class="badge disabled">
-        <span><i class="fa-brands fa-apple"></i></span>
+        <span><svg class="i" aria-hidden="true"><use href="#i-apple"/></svg></span>
         <span><small>Download on the</small><b>App Store</b></span>
       </div>
     </div>
   </div>
 
   <div class="hero-visual">
-    <img src="images/Hero_Section.png" alt="RemindMe+ app preview with reminder cards" class="hero-visual-img">
+    <img width="1280" height="1365" fetchpriority="high" decoding="async" src="images/Hero_Section.webp" alt="RemindMe+ app preview with reminder cards" class="hero-visual-img">
   </div>
 </section>
 
@@ -708,22 +714,22 @@
     </div>
     <div class="problem-grid">
       <div class="problem-card reveal">
-        <div class="problem-ic" style="background:#3A2A12; color:#FFB020;"><i class="fa-solid fa-pills"></i></div>
+        <div class="problem-ic" style="background:#3A2A12; color:#FFB020;"><svg class="i" aria-hidden="true"><use href="#i-pills"/></svg></div>
         <h3>Missed Medicines</h3>
         <p>Forget an important dose or health routine.</p>
       </div>
       <div class="problem-card reveal">
-        <div class="problem-ic" style="background:#12332F; color:#2FD9C4;"><i class="fa-solid fa-stethoscope"></i></div>
+        <div class="problem-ic" style="background:#12332F; color:#2FD9C4;"><svg class="i" aria-hidden="true"><use href="#i-stethoscope"/></svg></div>
         <h3>Missed Checkups</h3>
         <p>Lose track of appointments and health tests.</p>
       </div>
       <div class="problem-card reveal">
-        <div class="problem-ic" style="background:#12331E; color:#3BE07A;"><i class="fa-solid fa-rotate"></i></div>
+        <div class="problem-ic" style="background:#12331E; color:#3BE07A;"><svg class="i" aria-hidden="true"><use href="#i-rotate"/></svg></div>
         <h3>Missed Renewals</h3>
         <p>Forget insurance, subscriptions or important payments.</p>
       </div>
       <div class="problem-card reveal">
-        <div class="problem-ic" style="background:#241236; color:#B27CFF;"><i class="fa-solid fa-clipboard-list"></i></div>
+        <div class="problem-ic" style="background:#241236; color:#B27CFF;"><svg class="i" aria-hidden="true"><use href="#i-clipboard-list"/></svg></div>
         <h3>Missed Plans</h3>
         <p>Let important personal and financial goals slip away.</p>
       </div>
@@ -739,17 +745,17 @@
       <p class="solution-desc">One place to remember, organize and stay ahead of the things that matter.</p>
 
       <div class="illustration wipe-lr">
-        <img src="images/3rd.png" alt="RemindMe+ solution illustration" class="illustration-img">
+        <img width="1200" height="591" loading="lazy" decoding="async" src="images/3rd.webp" alt="RemindMe+ solution illustration" class="illustration-img">
       </div>
     </div>
 
     <div class="phone-carousel">
       <div class="carousel-frame">
-        <img src="images/carousel-1.png" alt="Onboarding screen 1" class="carousel-slide active">
-        <img src="images/carousel-2.png" alt="Onboarding screen 2" class="carousel-slide">
-        <img src="images/carousel-3.png" alt="Onboarding screen 3" class="carousel-slide">
+        <img width="560" height="1089" decoding="async" src="images/carousel-1.webp" alt="Onboarding screen 1" class="carousel-slide active">
+        <img width="560" height="1089" loading="lazy" decoding="async" src="images/carousel-2.webp" alt="Onboarding screen 2" class="carousel-slide">
+        <img width="560" height="1089" loading="lazy" decoding="async" src="images/carousel-3.webp" alt="Onboarding screen 3" class="carousel-slide">
       </div>
-      <div class="cp-next" id="carouselNext"><i class="fa-solid fa-arrow-right"></i></div>
+      <div class="cp-next" id="carouselNext"><svg class="i" aria-hidden="true"><use href="#i-arrow-right"/></svg></div>
       <div class="cp-dots">
         <span class="active"></span><span></span><span></span>
       </div>
@@ -766,22 +772,22 @@
     <div class="compare-panel without slide-l">
       <div class="compare-label">WITHOUT REMINDME+</div>
       <div class="compare-grid">
-        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-circle-question"></i></div><span>Forgotten</span></div>
-        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-calendar-xmark"></i></div><span>Missed</span></div>
-        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-stopwatch"></i></div><span>Delayed</span></div>
-        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-bolt"></i></div><span>Stress</span></div>
+        <div class="compare-item"><div class="compare-ic"><svg class="i" aria-hidden="true"><use href="#i-circle-question"/></svg></div><span>Forgotten</span></div>
+        <div class="compare-item"><div class="compare-ic"><svg class="i" aria-hidden="true"><use href="#i-calendar-xmark"/></svg></div><span>Missed</span></div>
+        <div class="compare-item"><div class="compare-ic"><svg class="i" aria-hidden="true"><use href="#i-stopwatch"/></svg></div><span>Delayed</span></div>
+        <div class="compare-item"><div class="compare-ic"><svg class="i" aria-hidden="true"><use href="#i-bolt"/></svg></div><span>Stress</span></div>
       </div>
     </div>
 
-    <div class="compare-arrow slide-fade"><i class="fa-solid fa-arrow-right"></i></div>
+    <div class="compare-arrow slide-fade"><svg class="i" aria-hidden="true"><use href="#i-arrow-right"/></svg></div>
 
     <div class="compare-panel with slide-r">
       <div class="compare-label">WITH REMINDME+</div>
       <div class="compare-grid">
-        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-circle-check"></i></div><span>Remembered</span></div>
-        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-calendar-check"></i></div><span>Planned</span></div>
-        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-check"></i></div><span>Completed</span></div>
-        <div class="compare-item"><div class="compare-ic"><i class="fa-solid fa-arrow-trend-up"></i></div><span>Ahead</span></div>
+        <div class="compare-item"><div class="compare-ic"><svg class="i" aria-hidden="true"><use href="#i-circle-check"/></svg></div><span>Remembered</span></div>
+        <div class="compare-item"><div class="compare-ic"><svg class="i" aria-hidden="true"><use href="#i-calendar-check"/></svg></div><span>Planned</span></div>
+        <div class="compare-item"><div class="compare-ic"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg></div><span>Completed</span></div>
+        <div class="compare-item"><div class="compare-ic"><svg class="i" aria-hidden="true"><use href="#i-arrow-trend-up"/></svg></div><span>Ahead</span></div>
       </div>
     </div>
   </div>
@@ -790,7 +796,7 @@
 <section class="howitworks">
   <div class="hiw-inner">
     <div class="hiw-visual">
-      <img src="images/Bot Screen.png" alt="RemindMe+ AI organised reminders illustration" class="hiw-visual-img">
+      <img width="1200" height="901" loading="lazy" decoding="async" src="images/Bot_Screen.webp" alt="RemindMe+ AI organised reminders illustration" class="hiw-visual-img">
     </div>
 
     <div>
@@ -805,12 +811,12 @@
         <div class="hiw-step reveal">
           <div class="hiw-num">02</div>
           <div><h3>Set It</h3><p>Choose when you want to be reminded.</p></div>
-          <div class="hiw-ic"><i class="fa-solid fa-calendar-days"></i></div>
+          <div class="hiw-ic"><svg class="i" aria-hidden="true"><use href="#i-calendar-days"/></svg></div>
         </div>
         <div class="hiw-step reveal">
           <div class="hiw-num">03</div>
           <div><h3>Get Reminded</h3><p>RemindMe+ keeps it on your radar at the right time.</p></div>
-          <div class="hiw-ic"><i class="fa-solid fa-bell"></i></div>
+          <div class="hiw-ic"><svg class="i" aria-hidden="true"><use href="#i-bell"/></svg></div>
         </div>
       </div>
     </div>
@@ -823,9 +829,9 @@
   <p class="exp-sub">From the moment you add a reminder to the moment it gets done, every screen is designed to keep life moving.</p>
 
   <div class="exp-phones">
-    <img src="images/experience-1.png" alt="RemindMe+ splash screen"
+    <img width="560" height="993" loading="lazy" decoding="async" src="images/experience-1.webp" alt="RemindMe+ splash screen"
          style="width:260px; max-width:100%; height:auto; display:block; border-radius:32px;">
-    <img src="images/experience-2.png" alt="RemindMe+ home screen"
+    <img width="560" height="993" loading="lazy" decoding="async" src="images/experience-2.webp" alt="RemindMe+ home screen"
          style="width:260px; max-width:100%; height:auto; display:block; border-radius:32px;">
   </div>
 </section>
@@ -836,7 +842,7 @@
   <p class="premium-sub">AI-powered reminders + instant SOS support to keep you smarter, safer, and ahead.</p>
 
   <div class="premium-panel">
-    <img src="images/GO Primium card.png" alt="RemindMe+ AI Mode and SOS premium features illustration" class="premium-panel-img">
+    <img width="1600" height="900" loading="lazy" decoding="async" src="images/GO_Primium_card.webp" alt="RemindMe+ AI Mode and SOS premium features illustration" class="premium-panel-img">
   </div>
 </section>
 
@@ -894,23 +900,23 @@
 <section class="final-cta">
   <div class="fc-inner">
     <div class="fc-illustration">
-      <img src="images/2nd.png" alt="RemindMe+ health and reminders illustration" class="fc-illustration-img">
+      <img width="1200" height="1033" loading="lazy" decoding="async" src="images/2nd.webp" alt="RemindMe+ health and reminders illustration" class="fc-illustration-img">
     </div>
 
     <div>
-      <div class="fc-brand"><img src="images/Logo_White.svg" alt="RemindMe+ logo" class="fc-logo"></div>
+      <div class="fc-brand"><img loading="lazy" decoding="async" src="images/Logo_White.svg" alt="RemindMe+ logo" class="fc-logo"></div>
       <h2>Stop Trying to Remember Everything.<br>Let <span class="blue">RemindMe+</span> Remember It For You.</h2>
       <p class="fc-sub">Your meetings. Your health. Your money. Your future.</p>
       <div class="fc-buttons">
-        <button class="btn-primary"><i class="fa-solid fa-lock"></i> Get RemindMe+</button>
+        <button class="btn-primary"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg> Get RemindMe+</button>
       </div>
       <div class="fc-store">
         <div class="badge fc-store">
-          <span><i class="fa-brands fa-google-play"></i></span>
+          <span><svg class="i" aria-hidden="true"><use href="#i-google-play"/></svg></span>
           <span><small>GET IT ON</small><b>Google Play</b></span>
         </div>
         <div class="badge fc-store">
-          <span><i class="fa-brands fa-apple"></i></span>
+          <span><svg class="i" aria-hidden="true"><use href="#i-apple"/></svg></span>
           <span><small>Download on the</small><b>App Store</b></span>
         </div>
       </div>
@@ -922,7 +928,7 @@
   <div class="footer-inner">
     <div class="footer-top">
       <div>
-        <div class="footer-brand"><img src="images/Logo_Vertical.svg" alt="RemindMe+ logo" class="footer-logo"></div>
+        <div class="footer-brand"><img loading="lazy" decoding="async" src="images/Logo_Vertical.svg" alt="RemindMe+ logo" class="footer-logo"></div>
       </div>
 
       <div class="footer-nav">
@@ -939,9 +945,9 @@
       </div>
 
       <div class="footer-social">
-        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" aria-label="LinkedIn"><svg class="i" aria-hidden="true"><use href="#i-linkedin-in"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg class="i" aria-hidden="true"><use href="#i-instagram"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg class="i" aria-hidden="true"><use href="#i-facebook-f"/></svg></a>
       </div>
     </div>
     <div class="footer-line">© 2026 RemindMe+. All rights reserved.</div>
@@ -954,16 +960,21 @@
   burger.addEventListener('click', () => menu.classList.toggle('open'));
 
   const siteHeader = document.querySelector('header');
-  let lastScrollY = window.scrollY;
+  let lastScrollY = window.scrollY, ticking = false;
   window.addEventListener('scroll', () => {
-    const currentScrollY = window.scrollY;
-    if (currentScrollY > lastScrollY && currentScrollY > 80) {
-      siteHeader.classList.add('header-hidden');
-      menu.classList.remove('open');
-    } else {
-      siteHeader.classList.remove('header-hidden');
-    }
-    lastScrollY = currentScrollY;
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      if (y > lastScrollY && y > 80) {
+        siteHeader.classList.add('header-hidden');
+        menu.classList.remove('open');
+      } else {
+        siteHeader.classList.remove('header-hidden');
+      }
+      lastScrollY = y;
+      ticking = false;
+    });
   }, { passive: true });
 
   // Onboarding carousel: switch slides + dots, auto-advance, pause on hover
@@ -990,12 +1001,13 @@
     carouselEl.addEventListener('mouseenter', stopCarousel);
     carouselEl.addEventListener('mouseleave', startCarousel);
     startCarousel();
+    document.addEventListener('visibilitychange', () => document.hidden ? stopCarousel() : startCarousel());
   }
 
   // Reveal problem cards one by one when the grid scrolls into view
   const problemCards = document.querySelectorAll('.problem-card.reveal');
   const revealCards = grid => grid.querySelectorAll('.problem-card.reveal').forEach((c, i) => {
-    c.style.setProperty('--d', (i * 0.18) + 's');
+    c.style.setProperty('--d', (i * 0.08) + 's');
     c.classList.add('in');
   });
   const problemGrid = document.querySelector('.problem-grid');
@@ -1022,7 +1034,7 @@
   // How it works: reveal the three steps one by one when in view
   const hiwSteps = document.querySelector('.hiw-steps');
   const revealSteps = el => el.querySelectorAll('.hiw-step.reveal').forEach((c, i) => {
-    c.style.setProperty('--d', (i * 0.25) + 's');
+    c.style.setProperty('--d', (i * 0.1) + 's');
     c.classList.add('in');
   });
   if (hiwSteps && 'IntersectionObserver' in window) {
