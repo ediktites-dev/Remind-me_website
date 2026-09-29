@@ -842,6 +842,10 @@
   .exp-phones{--tl:0deg; --tr:0deg;}
   .exp-phone{transform-origin:50% 100%; transform:rotate(var(--tl)); will-change:transform;}
   .exp-phone-r{transform:rotate(var(--tr));}
+
+  /* tighter gap between "Unlock Premium Power" and "Pricing" (both share the same background) */
+  .premium{padding-bottom:24px;}
+  .pricing{padding-top:48px;}
 </style>
 </head>
 <body>
@@ -1174,7 +1178,11 @@
       if (!el) return;
       stop();
       const startY = window.scrollY;
-      const targetNow = () => el.getBoundingClientRect().top + window.scrollY;
+      const headerH = document.querySelector('header').offsetHeight;
+      const padTop = parseFloat(getComputedStyle(el).paddingTop) || 0;
+      const goingUp = el.getBoundingClientRect().top < 0;      // header re-appears when scrolling up
+      const clear = goingUp ? Math.max(0, headerH - padTop) : 0;
+      const targetNow = () => el.getBoundingClientRect().top + window.scrollY - clear;
       if (reduceMotion.matches) { window.scrollTo(0, targetNow()); return; }
 
       const dist = Math.abs(targetNow() - startY);
