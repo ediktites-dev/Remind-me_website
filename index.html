@@ -313,10 +313,10 @@
   .howitworks{padding:80px 24px; background:var(--bg);}
   .hiw-inner{max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
 .hiw-visual{
-  position:relative; border-radius:22px; overflow:hidden; min-height:280px;
+  position:relative; border-radius:22px; overflow:visible; min-height:280px;
   display:flex; align-items:center; justify-content:center;
 }
-.hiw-visual-img{width:100%; height:auto; display:block; mix-blend-mode:multiply;}
+.hiw-visual-img{width:118.0%; max-width:none; flex:none; height:auto; display:block;}
 
   .hiw-eyebrow{color:#FFB020; font-size:.8rem; font-weight:700; display:block; margin-bottom:14px;}
   .hiw-title{font-size:clamp(1.7rem,3vw,2.3rem); font-weight:800; margin-bottom:30px;}
@@ -410,6 +410,10 @@
   .plan-price{font-size:1.9rem; font-weight:800; margin-bottom:4px;}
   .plan-price span{font-size:.8rem; font-weight:500; color:var(--muted);}
   .plan.popular .plan-price span{color:#AEB8DA;}
+  .plan-old{font-size:1rem; font-weight:500; color:var(--muted); text-decoration:line-through; margin-right:6px;}
+  .plan-tax{font-size:.7rem; font-weight:500; color:var(--muted); margin-bottom:10px;}
+  .plan.popular .plan-tax{color:#AEB8DA;}
+  .plan-save{display:inline-block; font-size:.72rem; font-weight:700; color:#0A7A3D; background:rgba(10,122,61,.1); padding:3px 10px; border-radius:999px; margin-bottom:10px;}
   .plan-desc{font-size:.8rem; color:var(--muted); margin-bottom:18px; min-height:34px;}
   .plan.popular .plan-desc{color:#C9D2EE;}
   .plan-features{list-style:none; margin-bottom:22px;}
@@ -632,7 +636,7 @@
   /* text on the blue backgrounds */
   .problem-eyebrow,.stayahead-eyebrow,.exp-eyebrow,.problem-title .hl{color:#FFC94D;}
   .problem-desc,.problem-card p,.stayahead-sub,.exp-sub,.fc-sub,
-  .plan.popular .plan-price span,.plan.popular .plan-desc{color:rgba(255,255,255,.88);}
+  .plan.popular .plan-price span,.plan.popular .plan-tax,.plan.popular .plan-desc{color:rgba(255,255,255,.88);}
   .plan.popular .plan-features li{color:#fff;}
   .final-cta h2 .blue{color:#FFC94D;}
 
@@ -702,6 +706,137 @@
   .app-soon{opacity:.15; cursor:default;}
   .app-soon:hover{transform:none !important; filter:none !important; box-shadow:inset 0 0 0 1px rgba(255,255,255,.28) !important;}
   .badge.app-soon:hover{box-shadow:none !important;}
+
+  /* ===== HOW IT WORKS — blue gradient step cards + motion ===== */
+  .hiw-steps{position:relative; gap:22px;}
+  /* flowing connector running behind the number badges */
+  .hiw-steps::before{
+    content:""; position:absolute; left:35px; top:40px; bottom:40px; width:2px; border-radius:2px; z-index:0;
+    background:
+      linear-gradient(180deg,transparent 0,#7FB0FF 50%,transparent 100%) 0 0/100% 70px repeat-y,
+      rgba(47,107,255,.22);
+    animation:hiwFlow 1.8s linear infinite;
+  }
+  @keyframes hiwFlow{to{background-position:0 70px,0 0;}}
+
+  .hiw-steps .hiw-step{
+    --dl:0s; --cy:1.4s;
+    position:relative; z-index:1; align-items:center; padding:20px 22px; border-radius:18px; color:#fff;
+    border:1px solid rgba(255,255,255,.22);
+    background:
+      radial-gradient(circle at 100% 0%,rgba(255,255,255,.26),transparent 46%),
+      linear-gradient(135deg,#3B7BFF 0%,#1F55E0 42%,#0A2C86 100%);
+    box-shadow:0 16px 32px -14px rgba(23,73,214,.65), inset 0 1px 0 rgba(255,255,255,.35);
+    transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease, filter .35s ease;
+    cursor:default;
+  }
+  .hiw-steps .hiw-step:nth-child(1){--dl:0s;   --cy:1.4s;}
+  .hiw-steps .hiw-step:nth-child(2){--dl:.18s; --cy:3.4s;}
+  .hiw-steps .hiw-step:nth-child(3){--dl:.36s; --cy:5.4s;}
+  .hiw-steps .hiw-step:hover{
+    transform:translateY(-5px) scale(1.015);
+    box-shadow:0 26px 40px -16px rgba(23,73,214,.8), inset 0 1px 0 rgba(255,255,255,.45);
+    filter:saturate(1.15);
+  }
+  .hiw-steps .hiw-step h3{color:#fff; font-size:1.05rem; letter-spacing:-.005em;}
+  .hiw-steps .hiw-step p{color:rgba(255,255,255,.84);}
+
+  .hiw-steps .hiw-num{
+    width:38px; height:38px; border-radius:12px; font-size:.9rem; color:#fff;
+    background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.34);
+    box-shadow:0 6px 14px -6px rgba(0,20,90,.6);
+  }
+  .hiw-steps .hiw-ic{
+    width:38px; height:38px; border-radius:50%; padding:0; font-size:1.05rem; color:#fff;
+    background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.3);
+    display:flex; align-items:center; justify-content:center; font-weight:700;
+  }
+
+  /* light sweep + expanding ring (ring lives on ::after so the card keeps its hover shadow) */
+  .hiw-steps .hiw-step::before{
+    content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.42) 50%,transparent 58%) 120% 0/220% 100% no-repeat;
+  }
+  .hiw-steps .hiw-step::after{
+    content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:0;
+  }
+
+  /* entrance */
+  .hiw-steps .hiw-step.reveal.in{
+    opacity:1;
+    animation:
+      hiwIn .8s cubic-bezier(.2,.9,.25,1) var(--dl) backwards,
+      hiwGlow 6s ease-out var(--cy) infinite;
+  }
+  @keyframes hiwIn{
+    0%{opacity:0; transform:translateX(56px) scale(.94); filter:blur(6px);}
+    60%{filter:blur(0);}
+    100%{opacity:1; transform:none; filter:none;}
+  }
+  /* one soft ring per card, passed 1 → 2 → 3 like a guided flow */
+  .hiw-steps .hiw-step.reveal.in::after{animation:hiwRing 6s ease-out var(--cy) infinite;}
+  .hiw-steps .hiw-step.reveal.in::before{animation:hiwShine 6s ease-in-out var(--cy) infinite;}
+  .hiw-steps .hiw-step.reveal.in .hiw-num{animation:hiwNum 6s ease-in-out var(--cy) infinite;}
+  .hiw-steps .hiw-step.reveal.in .hiw-ic{animation:hiwIc 6s ease-in-out var(--cy) infinite;}
+  .hiw-steps .hiw-step:nth-child(2).reveal.in .hiw-ic{animation-name:hiwIcBob;}
+  .hiw-steps .hiw-step:nth-child(3).reveal.in .hiw-ic{animation-name:hiwIcRing;}
+  .hiw-steps .hiw-step.reveal.in:hover::before{animation:hiwShineOnce .9s ease-in-out;}
+
+  @keyframes hiwGlow{0%{filter:brightness(1.12)} 18%,100%{filter:brightness(1)}}
+  @keyframes hiwRing{
+    0%{opacity:.95; box-shadow:0 0 0 0 rgba(47,107,255,.55);}
+    16%{opacity:0; box-shadow:0 0 0 18px rgba(47,107,255,0);}
+    100%{opacity:0; box-shadow:0 0 0 18px rgba(47,107,255,0);}
+  }
+  @keyframes hiwShine{0%{background-position:120% 0} 20%,100%{background-position:-20% 0}}
+  @keyframes hiwShineOnce{from{background-position:120% 0} to{background-position:-20% 0}}
+  @keyframes hiwNum{
+    0%,18%,100%{background:rgba(255,255,255,.16); color:#fff; transform:scale(1);}
+    3%,15%{background:#fff; color:#1749D6; transform:scale(1.14);}
+    16%{background:rgba(255,255,255,.16); color:#fff; transform:scale(1);}
+  }
+  @keyframes hiwIc{                 /* + turns */
+    0%,22%,100%{transform:rotate(0) scale(1);}
+    8%{transform:rotate(180deg) scale(1.18);}
+    16%{transform:rotate(360deg) scale(1);}
+  }
+  @keyframes hiwIcBob{              /* calendar hops */
+    0%,22%,100%{transform:translateY(0) rotate(0);}
+    5%{transform:translateY(-7px) rotate(-8deg);}
+    10%{transform:translateY(0) rotate(6deg);}
+    15%{transform:translateY(-3px) rotate(-3deg);}
+    19%{transform:translateY(0) rotate(0);}
+  }
+  @keyframes hiwIcRing{             /* bell rings */
+    0%,22%,100%{transform:rotate(0);}
+    3%{transform:rotate(16deg);} 6%{transform:rotate(-14deg);} 9%{transform:rotate(11deg);}
+    12%{transform:rotate(-8deg);} 15%{transform:rotate(4deg);} 18%{transform:rotate(0);}
+  }
+
+  @media (max-width:980px){ .hiw-steps::before{left:37px;} }
+  @media (max-width:480px){
+    .hiw-steps .hiw-step{padding:16px 16px; gap:12px;}
+    .hiw-steps::before{left:33px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hiw-steps::before{animation:none;}
+    .hiw-steps .hiw-step.reveal,.hiw-steps .hiw-step.reveal.in{opacity:1; animation:none;}
+    .hiw-steps .hiw-step.reveal.in::before,.hiw-steps .hiw-step.reveal.in::after,
+    .hiw-steps .hiw-step.reveal.in .hiw-num,.hiw-steps .hiw-step.reveal.in .hiw-ic{animation:none;}
+    .hiw-steps .hiw-step:hover{transform:none;}
+  }
+
+  /* ===== header navigation: active section indicator ===== */
+  .nav-links a{position:relative; padding:6px 0;}
+  .nav-links a::after{
+    content:""; position:absolute; left:0; right:0; bottom:-2px; height:2px; border-radius:2px;
+    background:linear-gradient(90deg,#7FB0FF,#fff);
+    transform:scaleX(0); transform-origin:left center; transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}
+  .nav-links a.active,.mobile-menu a.active{color:#fff;}
+  .mobile-menu a.active{border-bottom-color:#7FB0FF;}
+  section[id]{scroll-margin-top:0;}
 </style>
 </head>
 <body>
@@ -717,7 +852,7 @@
       <li><a href="#pricing">Pricing</a></li>
     </ul>
     <div class="nav-right">
-      <button class="nav-cta">Download RemindMe+</button>
+      <button class="nav-cta" data-scroll="#download">Download RemindMe+</button>
       <button class="burger" id="burgerBtn" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
@@ -791,7 +926,7 @@
   </div>
 </section>
 
-<section class="solution">
+<section class="solution" id="features">
   <div class="solution-inner">
     <div>
       <span class="solution-eyebrow">THE SOLUTION</span>
@@ -847,10 +982,10 @@
   </div>
 </section>
 
-<section class="howitworks">
+<section class="howitworks" id="how">
   <div class="hiw-inner">
     <div class="hiw-visual">
-      <img width="1200" height="901" loading="lazy" decoding="async" src="images/Bot_Screen.webp" alt="RemindMe+ AI organised reminders illustration" class="hiw-visual-img">
+      <img width="1707" height="1347" loading="lazy" decoding="async" src="images/Bot_Screen.webp" alt="RemindMe+ AI Powered assistant with live insights, analytics and upcoming reminders" class="hiw-visual-img">
     </div>
 
     <div>
@@ -890,7 +1025,7 @@
   </div>
 </section>
 
-<section class="premium">
+<section class="premium" id="premium">
   <span class="premium-eyebrow">UNLOCK PREMIUM POWER</span>
   <h2>Get <span class="blue">RemindMe+ Premium</span>. Unlock Smarter Features.</h2>
   <p class="premium-sub">AI-powered reminders + instant SOS support to keep you smarter, safer, and ahead.</p>
@@ -900,7 +1035,7 @@
   </div>
 </section>
 
-<section class="pricing">
+<section class="pricing" id="pricing">
   <span class="pricing-eyebrow">PRICING</span>
   <h2>Choose How You Want to Stay Ahead.</h2>
   <p class="pricing-sub">Start simple or unlock the complete RemindMe+ experience.</p>
@@ -922,7 +1057,8 @@
     <div class="plan popular">
       <span class="plan-badge">MOST POPULAR</span>
       <div class="plan-tier">PREMIUM</div>
-      <div class="plan-price">₹99<span>/month</span></div>
+      <div class="plan-price">₹299<span>/month</span></div>
+      <div class="plan-tax">(inclusive of taxes)</div>
       <div class="plan-desc">Everything You Need to Stay Ahead.</div>
       <ul class="plan-features">
         <li>Unlimited reminders</li>
@@ -938,7 +1074,9 @@
 
     <div class="plan">
       <div class="plan-tier">YEARLY</div>
-      <div class="plan-price">₹999<span>/year</span></div>
+      <div class="plan-price"><s class="plan-old">₹3588</s>₹2999<span>/year</span></div>
+      <div class="plan-tax">(inclusive of taxes)</div>
+      <div class="plan-save">Actual ₹3588 · You save ₹589 yearly</div>
       <div class="plan-desc">More value. More time saved.</div>
       <ul class="plan-features">
         <li>Everything in Plus</li>
@@ -951,7 +1089,7 @@
   </div>
 </section>
 
-<section class="final-cta">
+<section class="final-cta" id="download">
   <div class="fc-inner">
     <div class="fc-illustration">
       <img width="1200" height="1033" loading="lazy" decoding="async" src="images/2nd.webp" alt="RemindMe+ health and reminders illustration" class="fc-illustration-img">
@@ -1012,6 +1150,80 @@
   const burger = document.getElementById('burgerBtn');
   const menu = document.getElementById('mobileMenu');
   burger.addEventListener('click', () => menu.classList.toggle('open'));
+
+  // Header navigation: slide smoothly to the chosen section + highlight the section in view
+  (function () {
+    const root = document.documentElement;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let raf = null;
+
+    function stop() {
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+      root.style.scrollBehavior = '';
+    }
+    ['wheel', 'touchstart', 'keydown'].forEach(ev =>
+      window.addEventListener(ev, () => { if (raf) stop(); }, { passive: true }));
+
+    function slideTo(sel) {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      stop();
+      const startY = window.scrollY;
+      const targetNow = () => el.getBoundingClientRect().top + window.scrollY;
+      if (reduceMotion.matches) { window.scrollTo(0, targetNow()); return; }
+
+      const dist = Math.abs(targetNow() - startY);
+      const dur = Math.min(1500, 550 + dist * 0.16);           // longer trips take a bit longer
+      const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const t0 = performance.now();
+      root.style.scrollBehavior = 'auto';                       // don't fight the CSS smooth-scroll
+
+      const step = now => {
+        const p = Math.min(1, (now - t0) / dur);
+        // re-read the target every frame: lazily rendered sections can change height mid-scroll
+        window.scrollTo(0, startY + (targetNow() - startY) * ease(p));
+        if (p < 1) { raf = requestAnimationFrame(step); return; }
+        raf = requestAnimationFrame(() => {                     // final correction if layout moved
+          const off = targetNow() - window.scrollY;
+          if (Math.abs(off) > 2) window.scrollTo(0, window.scrollY + off);
+          stop();
+        });
+      };
+      raf = requestAnimationFrame(step);
+    }
+
+    document.querySelectorAll('header a[href^="#"]:not([href="#"]), [data-scroll]').forEach(link => {
+      link.addEventListener('click', e => {
+        const sel = link.dataset.scroll || link.getAttribute('href');
+        if (!document.querySelector(sel)) return;
+        e.preventDefault();
+        menu.classList.remove('open');
+        slideTo(sel);
+        if (history.replaceState) history.replaceState(null, '', sel);
+      });
+    });
+
+    // scroll spy: mark the nav link whose section is at the middle of the screen
+    const navLinks = document.querySelectorAll('.nav-links a, .mobile-menu a');
+    let activeSel = null;
+    const setActive = sel => {
+      activeSel = sel;
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === sel));
+    };
+    if ('IntersectionObserver' in window) {
+      const spy = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          const sel = '#' + en.target.id;
+          if (en.isIntersecting) setActive(sel);
+          else if (activeSel === sel) setActive(null);
+        });
+      }, { rootMargin: '-45% 0px -54% 0px' });
+      ['features', 'how', 'premium', 'pricing'].forEach(id => {
+        const sec = document.getElementById(id);
+        if (sec) spy.observe(sec);
+      });
+    }
+  })();
 
   const siteHeader = document.querySelector('header');
   let lastScrollY = window.scrollY, ticking = false;
