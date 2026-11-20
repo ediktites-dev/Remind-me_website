@@ -1,0 +1,93 @@
+@font-face{
+  font-family:'Satoshi';
+  src:url('fonts/Satoshi-Variable.woff2') format('woff2');
+  font-weight:300 900; font-style:normal; font-display:swap;
+}
+:root{
+  color-scheme:light;
+  --navy:#0B1B3D; --blue:#2F6BFF; --bg:#F4F7FE; --ink:#0B1B3D;
+  --muted:#5B6478; --card:#FFFFFF; --line:#E6EAF5; --amber:#FFB020;
+  --brand-blue:#0032a6;
+  --brand-grad:linear-gradient(to bottom right,#061946 0%,#061946 15%,#051a4c 25%,#031e5b 35%,#01216a 45%,#00257a 55%,#002989 65%,#002d98 75%,#0032a6 85%,#003bc4 100%);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+body{
+  font-family:'Satoshi',system-ui,-apple-system,'Segoe UI',sans-serif;
+  background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased;
+  min-height:100vh; min-height:100svh; display:flex; flex-direction:column;
+}
+a{color:inherit; text-decoration:none;}
+a:focus-visible{outline:2px solid var(--blue); outline-offset:3px; border-radius:4px;}
+
+/* header */
+.lg-header{background:var(--brand-blue) var(--brand-grad); padding-top:env(safe-area-inset-top,0px);}
+.lg-nav{max-width:1280px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px;}
+.lg-logo{height:57px; width:auto; display:block;}
+.lg-back{
+  color:#fff; font-weight:600; font-size:.9rem; padding:0 22px; height:39px;
+  display:inline-flex; align-items:center; border-radius:999px;
+  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7); transition:background .2s ease;
+}
+.lg-back:hover{background:rgba(255,255,255,.14);}
+
+/* page hero */
+.lg-hero{background:var(--brand-blue) var(--brand-grad); color:#fff; padding:40px 24px 72px;}
+.lg-hero-inner{max-width:860px; margin:0 auto;}
+.lg-hero h1{font-size:clamp(2rem,4.5vw,3.2rem); font-weight:800; letter-spacing:-.02em; line-height:1.1;}
+.lg-hero p{margin-top:14px; color:rgba(255,255,255,.88); font-size:1.05rem; line-height:1.6; max-width:60ch;}
+.lg-updated{display:inline-block; margin-top:20px; font-size:.82rem; font-weight:600; color:#FFC94D;}
+
+/* content */
+.lg-main{flex:1; padding:0 24px 80px;}
+.lg-doc{
+  max-width:860px; margin:-36px auto 0; background:var(--card);
+  border:1px solid var(--line); border-radius:20px; padding:40px 44px;
+  box-shadow:0 24px 50px -28px rgba(11,27,61,.35);
+}
+.lg-doc section + section{margin-top:34px; padding-top:30px; border-top:1px solid var(--line);}
+.lg-doc h2{font-size:1.25rem; font-weight:800; margin-bottom:12px; letter-spacing:-.01em;}
+.lg-doc p,.lg-doc li{font-size:1rem; line-height:1.7; color:#2B3550; max-width:68ch;}
+.lg-doc p + p{margin-top:12px;}
+.lg-doc ul{margin:12px 0 0 1.2em;}
+.lg-doc li{margin-top:6px;}
+.lg-doc li::marker{color:var(--blue);}
+.lg-doc a.inline{color:#002d98; font-weight:600; text-decoration:underline; text-underline-offset:3px;}
+.lg-note{
+  margin-top:14px; padding:14px 16px; border-radius:12px; font-size:.95rem; line-height:1.6;
+  background:#FFF6E0; border:1px solid #FFE2A3; color:#5A3E00; max-width:68ch;
+}
+.lg-contact dl{display:grid; grid-template-columns:max-content 1fr; gap:8px 20px; margin-top:12px;}
+.lg-contact dt{font-weight:700; font-size:.95rem;}
+.lg-contact dd{font-size:.95rem; color:#2B3550; line-height:1.55;}
+
+/* footer */
+.lg-footer{background:linear-gradient(180deg,#F6F9FF 0%,#EAF2FF 100%); border-top:1px solid #C5CFE3; padding:22px 24px;}
+.lg-footer-inner{max-width:1280px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px 24px; font-size:.8rem; color:var(--navy);}
+.lg-footer nav{display:flex; gap:20px;}
+.lg-footer nav a{font-weight:600; color:#002d98;}
+.lg-footer nav a:hover{text-decoration:underline; text-underline-offset:3px;}
+
+@media (max-width:640px){
+  .lg-logo{height:44px;}
+  .lg-hero{padding:28px 20px 64px;}
+  .lg-main{padding:0 16px 56px;}
+  .lg-doc{padding:28px 22px; border-radius:16px;}
+  .lg-contact dl{grid-template-columns:1fr; gap:2px;}
+  .lg-contact dd{margin-bottom:10px;}
+  .lg-footer-inner{justify-content:center; text-align:center;}
+}
+
+/* ===== long-form legal text additions ===== */
+.lg-intro{max-width:68ch;}
+.lg-toc{margin:26px 0 34px; padding:20px 24px; background:var(--bg); border:1px solid var(--line); border-radius:14px;}
+.lg-toc h2{font-size:.95rem; margin-bottom:10px;}
+.lg-toc ol{list-style:none; columns:2; column-gap:32px; margin:0; padding:0;}
+.lg-toc li{margin:0; padding:3px 0; break-inside:avoid; font-size:.92rem;}
+.lg-toc a{color:#002d98; font-weight:600;}
+.lg-toc a:hover{text-decoration:underline; text-underline-offset:3px;}
+.lg-doc section{scroll-margin-top:16px;}
+.lg-doc ul.lg-list li b{color:var(--ink);}
+.lg-todo{background:#FFE9A8; color:#5A3E00; padding:1px 6px; border-radius:5px; font-weight:700;}
+@media (max-width:640px){ .lg-toc ol{columns:1;} }
