@@ -893,6 +893,18 @@
       border-bottom:0; color:#fff; font-size:.88rem;
     }
   }
+
+  /* ===== "Coming soon" toast (Store.Shop) ===== */
+  .toast{
+    position:fixed; left:50%; top:calc(env(safe-area-inset-top,0px) + 96px); z-index:200;
+    transform:translate(-50%,-12px); opacity:0; pointer-events:none;
+    background:var(--brand-blue) var(--brand-grad); color:#fff;
+    padding:12px 24px; border-radius:999px; font-weight:600; font-size:.95rem;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.28), 0 14px 30px -10px rgba(0,20,90,.6);
+    transition:opacity .25s ease, transform .25s ease; white-space:nowrap;
+  }
+  .toast.show{opacity:1; transform:translate(-50%,0);}
+  @media (prefers-reduced-motion:reduce){ .toast{transition:none;} }
 </style>
 </head>
 <body>
@@ -909,7 +921,7 @@
     </ul>
     <div class="nav-right">
       <div class="nav-actions">
-        <a class="nav-cta nav-shop" href="#" target="_blank" rel="noopener">Store.Shop</a>
+        <a class="nav-cta nav-shop" href="#" role="button">Store.Shop</a>
         <button class="nav-cta" data-scroll="#download">Get RemindMe+</button>
       </div>
       <button class="burger" id="burgerBtn" aria-label="Toggle menu">
@@ -923,7 +935,7 @@
     <a href="#premium">Premium Power</a>
     <a href="#pricing">Pricing</a>
     <div class="mobile-menu-actions">
-      <a class="nav-cta nav-shop" href="#" target="_blank" rel="noopener">Store.Shop</a>
+      <a class="nav-cta nav-shop" href="#" role="button">Store.Shop</a>
       <button class="nav-cta" data-scroll="#download">Get RemindMe+</button>
     </div>
   </div>
@@ -1430,6 +1442,26 @@
   } else if (wipeEl) {
     wipeEl.classList.add('in');
   }
+</script>
+
+<div class="toast" id="toast" role="status" aria-live="polite">Store.Shop is coming soon</div>
+
+<script>
+  // Store.Shop: not live yet, so show a "Coming soon" message instead of opening a link
+  (function () {
+    const toast = document.getElementById('toast');
+    let hideTimer = null;
+    document.querySelectorAll('.nav-shop').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        const m = document.getElementById('mobileMenu');
+        if (m) m.classList.remove('open');
+        toast.classList.add('show');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+      });
+    });
+  })();
 </script>
 
 </body>
